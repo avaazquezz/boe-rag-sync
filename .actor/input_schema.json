@@ -31,15 +31,14 @@
     "syncId": {
       "title": "Sync ID",
       "type": "string",
-      "description": "Names the sync state kept between runs: what was already sent, so the next run only emits what changed. Use one per vector store you keep in sync (for example, one per chunk size).",
+      "description": "Turns on incremental sync: the Actor remembers what it sent under this name and the next run emits only what changed, plus deletes. Required for scheduled runs; use one per vector store. Leave empty for a one-off export of every chunk, with no state kept.",
       "editor": "textfield",
-      "default": "default",
       "pattern": "^[A-Za-z0-9_-]{1,40}$"
     },
     "fullReload": {
       "title": "Full reload",
       "type": "boolean",
-      "description": "Emit every chunk again (and delete stale ones), e.g. after wiping your vector store. Otherwise only what changed since the last run is emitted.",
+      "description": "With a syncId: emit every chunk again (and delete stale ones), e.g. after wiping your vector store. Without a syncId every run already emits everything.",
       "default": false
     }
   },

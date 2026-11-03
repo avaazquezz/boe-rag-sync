@@ -15,10 +15,9 @@ from .boe import fetch, parse_law
 from .chunking import build_records
 from .sync import Manifest, apply, diff, within_budget
 
-# The platform validates input and applies schema defaults; these serve local runs and must
+# The platform validates input and applies schema defaults; this one serves local runs and must
 # match .actor/input_schema.json (tests/test_main.py checks it).
 DEFAULT_MAX_CHUNK_CHARS = 2000
-DEFAULT_SYNC_ID = "default"
 # Named storages outlive runs; with limited permissions the Actor keeps access to the stores it
 # created in earlier runs of the same user (ADR 0002).
 STATE_STORE = "boe-rag-sync-state"
@@ -36,8 +35,9 @@ class Settings:
     full_reload: bool
     billing: bool
     # Manifest key prefix: the syncId, plus the date when asOfDate pins one, so a one-off run at a
-    # past date never rewrites the state of the store that follows the law day by day.
-    state_prefix: str
+    # past date never rewrites the state of the store that follows the law day by day. None
+    # without a syncId: a one-off export that emits every chunk and keeps no state (ADR 0005).
+    state_prefix: str | None
 
 
 async def main() -> None:
@@ -48,17 +48,19 @@ async def main() -> None:
             msg = f"{DATASET_ITEM_EVENT} must stay unpriced: charge only {BILLED_EVENT!r}"
             raise RuntimeError(msg)
         pinned = actor_input.get("asOfDate")
-        sync_id = actor_input.get("syncId", DEFAULT_SYNC_ID)
+        sync_id = actor_input.get("syncId")
         settings = Settings(
             as_of=date.fromisoformat(pinned) if pinned else _today(),
             max_chars=actor_input.get("maxChunkChars", DEFAULT_MAX_CHUNK_CHARS),
             full_reload=actor_input.get("fullReload", False),
             billing=pricing.is_pay_per_event,
-            state_prefix=f"{sync_id}.{pinned}" if pinned else sync_id,
+            state_prefix=(f"{sync_id}.{pinned}" if pinned else sync_id) if sync_id else None,
         )
         # Resolved up front: a typo fails the run before any work or charge.
         law_ids = list(dict.fromkeys(resolve(ref) for ref in actor_input["laws"]))
-        state = await Actor.open_key_value_store(name=STATE_STORE)
+        state = (
+            await Actor.open_key_value_store(name=STATE_STORE) if settings.state_prefix else None
+        )
         results: list[dict[str, Any]] = []
         async with httpx.AsyncClient(timeout=60) as client:
             for law_id in law_ids:
@@ -74,21 +76,25 @@ async def main() -> None:
             {"as_of": settings.as_of.isoformat(), "state": settings.state_prefix, "laws": results},
         )
         if any(r["status"] == "stopped_by_spending_limit" for r in results):
-            await Actor.set_status_message("Spending limit reached; run again to sync the rest.")
+            await Actor.set_status_message(
+                "Spending limit reached; run again to sync the rest."
+                if state
+                else "Spending limit reached; raise it to export every article."
+            )
         if failed := [r["law_id"] for r in results if r["status"] == "failed"]:
             msg = f"Sync failed for {', '.join(failed)}; see the log and the OUTPUT record"
             raise RuntimeError(msg)
 
 
 async def _sync_law(
-    client: httpx.AsyncClient, state: KeyValueStore, law_id: str, settings: Settings
+    client: httpx.AsyncClient, state: KeyValueStore | None, law_id: str, settings: Settings
 ) -> dict[str, Any]:
     metadata, text = await asyncio.gather(
         fetch(client, law_id, "metadatos"), fetch(client, law_id, "texto")
     )
     records = build_records(parse_law(law_id, metadata, text), settings.as_of, settings.max_chars)
     key = f"{settings.state_prefix}.{law_id}"
-    manifest: Manifest = await state.get_value(key, {})
+    manifest: Manifest = await state.get_value(key, {}) if state else {}
     affordable = (
         Actor.get_charging_manager().calculate_max_event_charge_count_within_limit(BILLED_EVENT)
         if settings.billing
@@ -105,7 +111,8 @@ async def _sync_law(
     for start in range(0, len(ops), PUSH_BATCH):
         # push_data takes plain dicts; a TypedDict is not a subtype of dict[Any, Any].
         await Actor.push_data([dict(op) for op in ops[start : start + PUSH_BATCH]])
-    await state.set_value(key, apply(manifest, ops))
+    if state:
+        await state.set_value(key, apply(manifest, ops))
     charged = 0
     if settings.billing and (billable := sum(change.billable for change in changes)):
         charged = (await Actor.charge(BILLED_EVENT, count=billable)).charged_count

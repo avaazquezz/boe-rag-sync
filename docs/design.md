@@ -87,7 +87,8 @@ is split by rows repeating the header.
 
 ### Sync
 
-The manifest stores, per law, `{chunk_id: content_hash}` of what was last emitted, in the named
+Incremental sync is opt-in (ADR 0005): without a `syncId` a run is a one-off export that emits every
+chunk and neither reads nor writes state. With one, the manifest stores, per law, `{chunk_id: content_hash}` of what was last emitted, in the named
 key-value store `boe-rag-sync-state` under the key `{syncId}.{lawId}`, or `{syncId}.{asOfDate}.{lawId}` when
 `asOfDate` is set: a store that follows the law day by day and a store pinned to a date never share state,
 so a one-off historical run cannot rewrite the live one. Each run computes the current chunks and diffs:
@@ -122,7 +123,8 @@ schedules must not overlap.
 ## Contracts
 
 Input: `laws` (required; BOE id, URL or alias), `asOfDate` (default: today in Europe/Madrid),
-`maxChunkChars` (default 2000), `syncId` (default `"default"`), `fullReload` (default false).
+`maxChunkChars` (default 2000), `syncId` (optional, no default: without it, a one-off export),
+`fullReload` (default false).
 
 `laws` entries are resolved before any work (`aliases.resolve`): a typo fails the run at once;
 duplicates are synced once. `context_header` = `[name > hierarchy… > block title]`, where `name` is the
