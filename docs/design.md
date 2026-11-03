@@ -87,16 +87,32 @@ is split by rows repeating the header.
 
 ### Sync
 
-The manifest stores, per `(syncId, law)`, `{chunk_id: content_hash}` of what was last emitted.
-Each run computes the current chunks and diffs:
-- `upsert` when the id is new or its hash changed;
-- `delete` when the id is in the manifest but no longer produced.
+The manifest stores, per `(syncId, law)`, `{chunk_id: content_hash}` of what was last emitted, in the
+named key-value store `boe-rag-sync-state` under the key `{syncId}.{lawId}`. Each run computes the current
+chunks and diffs:
+- `upsert` when the id is new, its hash changed, or `fullReload` is set;
+- `delete` when the id is in the manifest but no longer produced, with `reason: superseded` if its block
+  still has chunks (fewer than before) and `reason: repealed` if the block has none at `asOfDate`.
 
-The manifest is written per law after its records are pushed. A crash between push and write re-emits
-the same records next run, which is safe because every record is idempotent.
-Before each article the Actor checks the user's spending limit and stops before starting an article it
-cannot finish. A law that fails to fetch or parse leaves its manifest untouched; other laws continue and
-the run ends with an error listing the failures. Laws removed from the input are left untouched.
+Ops are grouped per block (deletes first) and a block is emitted whole or not at all. With pay-per-event
+pricing, each block with at least one upsert costs one `article` event, charged before its ops are
+accepted; deletes are free. When a charge is refused the law stops before that block; when a charge
+reaches the limit, everything accepted is pushed at once because the platform aborts the run shortly after.
+Ops are pushed in batches of 500.
+
+The manifest is rebuilt from the ops actually accepted (`sync.apply`) and written after the push, so a run
+stopped by the spending limit records only what it emitted and the next run resumes from there without
+charging again. A crash between push and write re-emits the same ops next run, which is safe because
+every op is idempotent. This relies on `push_data` writing every item: Apify's synthetic
+`apify-default-dataset-item` event must stay unpriced (the Actor refuses to start otherwise). Locally,
+`ACTOR_TEST_PAY_PER_EVENT=true` prices every unknown event, that one included, at $1, so a local run that
+hits the limit drops items from its dataset; that is a test-mode artefact.
+
+A law that fails to fetch or parse leaves its manifest untouched; other laws continue and the run ends with
+an error listing the failures. After a spending-limit stop the remaining laws are skipped. The default
+key-value store's `OUTPUT` record summarises each law (status, upserts, deletes, articles charged). Laws
+removed from the input are left untouched. Two concurrent runs with the same `syncId` would race on the
+manifest; schedules must not overlap.
 
 ## Contracts
 
