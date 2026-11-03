@@ -341,6 +341,7 @@ def test_build_records_emits_the_full_record_contract() -> None:
     )
     [record] = build_records(law(a4), date(2020, 1, 1), 2000)
     expected = {
+        "op": "upsert",
         "chunk_id": f"{LAW_ID}:a4:0",
         "point_id": "d29a273d-7c0c-57d6-8e33-5a06157d5991",
         "law_id": LAW_ID,
@@ -362,7 +363,7 @@ def test_build_records_emits_the_full_record_contract() -> None:
         "attribution": ATTRIBUTION,
         "disclaimer": DISCLAIMER,
     }
-    hashed = {k: v for k, v in expected.items() if k != "law_updated_at"}
+    hashed = {k: v for k, v in expected.items() if k not in {"op", "law_updated_at"}}
     canonical = json.dumps(hashed, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
     assert record == {
         **expected,
