@@ -15,7 +15,7 @@
     "asOfDate": {
       "title": "As of date",
       "type": "string",
-      "description": "Return the text in force on this date (YYYY-MM-DD). Defaults to today in Spain.",
+      "description": "Return the text in force on this date (YYYY-MM-DD). Leave empty to follow the law as it changes (today in Spain). A fixed date keeps its own sync state, so a one-off run at a past date never disturbs the store you keep up to date.",
       "editor": "datepicker",
       "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
     },
@@ -27,6 +27,20 @@
       "minimum": 500,
       "maximum": 20000,
       "unit": "characters"
+    },
+    "syncId": {
+      "title": "Sync ID",
+      "type": "string",
+      "description": "Names the sync state kept between runs: what was already sent, so the next run only emits what changed. Use one per vector store you keep in sync (for example, one per chunk size).",
+      "editor": "textfield",
+      "default": "default",
+      "pattern": "^[A-Za-z0-9_-]{1,40}$"
+    },
+    "fullReload": {
+      "title": "Full reload",
+      "type": "boolean",
+      "description": "Emit every chunk again (and delete stale ones), e.g. after wiping your vector store. Otherwise only what changed since the last run is emitted.",
+      "default": false
     }
   },
   "required": [

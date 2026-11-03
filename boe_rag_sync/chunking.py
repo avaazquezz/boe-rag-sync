@@ -7,7 +7,7 @@ import re
 import uuid
 from collections.abc import Iterable, Sequence
 from datetime import date
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 from .boe import Block, Law, Table, Version
 
@@ -22,11 +22,12 @@ _ABBREVIATION = re.compile(
     r"(?<!\w)(?:(?i:arts?|aptdo|apdo|cfr|dña|etc|núm|pág|párr|sra?|ss|vid)|[A-ZÁÉÍÓÚÑ])\.\Z"
 )
 # law_updated_at changes whenever any article of the law is reformed: hashing it would re-upsert
-# every chunk of the law on each reform.
-_UNHASHED = frozenset({"content_hash", "law_updated_at"})
+# every chunk of the law on each reform (ADR 0004).
+_UNHASHED = frozenset({"op", "content_hash", "law_updated_at"})
 
 
 class Record(TypedDict):
+    op: Literal["upsert"]
     chunk_id: str
     point_id: str
     law_id: str
@@ -114,8 +115,9 @@ def build_records(law: Law, as_of: date, max_chars: int) -> list[Record]:
         for index, text in enumerate(chunks):
             chunk_id = f"{law.id}:{block.id}:{index}"
             record = Record(
+                op="upsert",
                 chunk_id=chunk_id,
-                point_id=str(uuid.uuid5(NAMESPACE, chunk_id)),
+                point_id=point_id(chunk_id),
                 law_id=law.id,
                 law_title=law.title,
                 block_id=block.id,
@@ -139,6 +141,10 @@ def build_records(law: Law, as_of: date, max_chars: int) -> list[Record]:
             record["content_hash"] = _content_hash(record)
             records.append(record)
     return records
+
+
+def point_id(chunk_id: str) -> str:
+    return str(uuid.uuid5(NAMESPACE, chunk_id))
 
 
 def _split_paragraph(paragraph: str, max_chars: int) -> list[tuple[str, str]]:
