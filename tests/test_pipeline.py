@@ -57,8 +57,7 @@ def test_repealed_articles_produce_no_records() -> None:
 def test_context_header_carries_the_whole_path() -> None:
     (a4,) = of_block("et", "a4")
     assert a4["context_header"] == (
-        "[Real Decreto Legislativo 2/2015, de 23 de octubre, por el que se aprueba el texto "
-        "refundido de la Ley del Estatuto de los Trabajadores > TEXTO REFUNDIDO DE LA LEY DEL "
+        "[Estatuto de los Trabajadores > TEXTO REFUNDIDO DE LA LEY DEL "
         "ESTATUTO DE LOS TRABAJADORES > TÍTULO I. De la relación individual de trabajo > "
         "CAPÍTULO I. Disposiciones generales > Sección 2.ª Derechos y deberes laborales básicos "
         "> Artículo 4]"

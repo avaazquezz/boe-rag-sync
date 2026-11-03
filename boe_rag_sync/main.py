@@ -10,6 +10,7 @@ import httpx
 from apify import Actor
 from apify.storages import KeyValueStore
 
+from .aliases import resolve
 from .boe import fetch, parse_law
 from .chunking import build_records
 from .sync import Manifest, apply, diff, within_budget
@@ -55,10 +56,12 @@ async def main() -> None:
             billing=pricing.is_pay_per_event,
             state_prefix=f"{sync_id}.{pinned}" if pinned else sync_id,
         )
+        # Resolved up front: a typo fails the run before any work or charge.
+        law_ids = list(dict.fromkeys(resolve(ref) for ref in actor_input["laws"]))
         state = await Actor.open_key_value_store(name=STATE_STORE)
         results: list[dict[str, Any]] = []
         async with httpx.AsyncClient(timeout=60) as client:
-            for law_id in actor_input["laws"]:
+            for law_id in law_ids:
                 try:
                     result = await _sync_law(client, state, law_id, settings)
                 except Exception as error:  # noqa: BLE001

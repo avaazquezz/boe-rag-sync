@@ -36,6 +36,7 @@ everything else is pure and tested against fixtures.
   `docs/design.md`; read them before touching the parser.
 - `chunking.py` — version in force at a date (lex posterior, see design.md), cascade splitting, records per ADR 0003 and 0004
 - `sync.py` — `diff` (ops per block) and `apply` (manifest after what was emitted), pure
+- `aliases.py` — alias → (BOE id, short name) for 20 common laws; `resolve` accepts id, URL or alias
 - `main.py` — Apify shell
 
 Tests: `test_boe.py` (parser on fixtures, fetch retries), `test_chunking.py` (splitter and records

@@ -18,6 +18,7 @@ from boe_rag_sync.chunking import (
 )
 
 LAW_ID = "BOE-A-2015-11430"
+SHORT_NAME = "Estatuto de los Trabajadores"
 LAW_TITLE = (
     "Real Decreto Legislativo 2/2015, texto refundido de la Ley del Estatuto de los Trabajadores"
 )
@@ -349,7 +350,7 @@ def test_build_records_emits_the_full_record_contract() -> None:
         "block_id": "a4",
         "block_type": "precepto",
         "hierarchy": list(HIERARCHY),
-        "context_header": f"[{LAW_TITLE} > {HIERARCHY[0]} > {HIERARCHY[1]} > Artículo 4]",
+        "context_header": f"[{SHORT_NAME} > {HIERARCHY[0]} > {HIERARCHY[1]} > Artículo 4]",
         "text": "**Artículo 4. Derechos laborales.**\n\n1. Texto.",
         "chunk_index": 0,
         "chunk_count": 1,
@@ -392,11 +393,11 @@ def test_build_records_numbers_chunks_with_deterministic_ids() -> None:
         (
             ("TÍTULO I", "CAPÍTULO II"),
             "Artículo 4",
-            f"[{LAW_TITLE} > TÍTULO I > CAPÍTULO II > Artículo 4]",
+            f"[{SHORT_NAME} > TÍTULO I > CAPÍTULO II > Artículo 4]",
         ),
-        ((), "Artículo 1", f"[{LAW_TITLE} > Artículo 1]"),
-        (("TÍTULO PRELIMINAR",), "", f"[{LAW_TITLE} > TÍTULO PRELIMINAR]"),
-        ((), "", f"[{LAW_TITLE}]"),
+        ((), "Artículo 1", f"[{SHORT_NAME} > Artículo 1]"),
+        (("TÍTULO PRELIMINAR",), "", f"[{SHORT_NAME} > TÍTULO PRELIMINAR]"),
+        ((), "", f"[{SHORT_NAME}]"),
     ],
 )
 def test_build_records_context_header(
@@ -457,3 +458,11 @@ def test_content_hash_ignores_law_updated_at_but_tracks_text() -> None:
     assert reformed_law["law_updated_at"] != base["law_updated_at"]
     assert reformed_law["content_hash"] == base["content_hash"]
     assert changed_text["content_hash"] != base["content_hash"]
+
+
+def test_context_header_falls_back_to_the_official_title_without_a_short_name() -> None:
+    a1 = block(version(date(2015, 11, 13), "Texto."), title="Artículo 1", hierarchy=())
+    other = Law(id="BOE-A-2099-1", title=LAW_TITLE, updated_at="x", repealed=False, blocks=(a1,))
+    assert build_records(other, date(2026, 11, 3), 2000)[0]["context_header"] == (
+        f"[{LAW_TITLE} > Artículo 1]"
+    )
