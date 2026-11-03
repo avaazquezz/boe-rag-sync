@@ -2,7 +2,7 @@ from datetime import date
 
 from boe_rag_sync.boe import Block, Law, Version
 from boe_rag_sync.chunking import Record, build_records, point_id
-from boe_rag_sync.sync import Change, apply, diff
+from boe_rag_sync.sync import Change, apply, diff, within_budget
 
 LAW_ID = "BOE-A-2015-11430"
 TODAY = date(2026, 11, 3)
@@ -135,3 +135,28 @@ def test_apply_records_only_the_changes_that_were_emitted() -> None:
     first, _ = diff({}, current, full_reload=False)
     partial = apply({}, first.ops)
     assert summary(diff(partial, current, full_reload=False)) == [("a2", [("upsert", "0")])]
+
+
+def test_within_budget_keeps_free_changes_and_billable_ones_while_affordable() -> None:
+    _, manifest = sync({}, records(article("a2", *paragraphs("borrado", 1))))
+    current = records(article("a1", *paragraphs("uno", 1)), article("a3", *paragraphs("tres", 1)))
+    changes = diff(manifest, current, full_reload=False)
+    assert [(c.block_id, c.billable) for c in changes] == [
+        ("a2", False),
+        ("a1", True),
+        ("a3", True),
+    ]
+
+    kept, left_out = within_budget(changes, 1)
+    assert [c.block_id for c in kept] == ["a2", "a1"]
+    assert left_out == 1
+    kept, left_out = within_budget(changes, 0)
+    assert [c.block_id for c in kept] == ["a2"]
+    assert left_out == 2
+    assert within_budget(changes, None) == (changes, 0)
+
+
+def test_diff_survives_a_block_id_with_a_colon() -> None:
+    (change,) = diff({f"{LAW_ID}:a:1:0": "sha256:old"}, [], full_reload=False)
+    assert change.block_id == "a:1"
+    assert change.ops[0]["law_id"] == LAW_ID

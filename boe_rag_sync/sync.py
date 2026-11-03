@@ -42,7 +42,9 @@ def diff(
     by_block: dict[str, list[Op]] = {}
     for chunk_id in manifest:
         if chunk_id not in produced:
-            law_id, block_id, _ = chunk_id.split(":")
+            # "{law_id}:{block_id}:{index}"; law ids are validated, block ids come from the XML.
+            law_id, rest = chunk_id.split(":", 1)
+            block_id = rest.rsplit(":", 1)[0]
             by_block.setdefault(block_id, []).append(
                 Delete(
                     op="delete",
@@ -56,6 +58,24 @@ def diff(
         if full_reload or manifest.get(record["chunk_id"]) != record["content_hash"]:
             by_block.setdefault(record["block_id"], []).append(record)
     return [Change(block_id, tuple(ops)) for block_id, ops in by_block.items()]
+
+
+def within_budget(changes: Sequence[Change], affordable: int | None) -> tuple[list[Change], int]:
+    """Changes to emit when only `affordable` billable blocks can be paid for (None: no limit).
+
+    Free changes (deletes only) are always kept; billable ones in order while the budget lasts.
+    Returns the kept changes and how many billable ones were left for a later run.
+    """
+    kept: list[Change] = []
+    billable = left_out = 0
+    for change in changes:
+        if change.billable:
+            if affordable is not None and billable >= affordable:
+                left_out += 1
+                continue
+            billable += 1
+        kept.append(change)
+    return kept, left_out
 
 
 def apply(manifest: Mapping[str, str], ops: Iterable[Op]) -> Manifest:
