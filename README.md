@@ -257,7 +257,7 @@ Each run writes an `OUTPUT` record to its default key-value store (values illust
       "deletes": 1,
       "articles_charged": 0,
       "articles_left_for_later": 0,
-      "chunks_in_force": 640
+      "chunks_in_force": 273
     },
     {
       "law_id": "BOE-A-2018-16673",
