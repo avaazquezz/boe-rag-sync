@@ -3,8 +3,8 @@ embed, and keeps your vector store in sync as the laws change. It is built for d
 assistants on Spanish law: legaltech products, AI agencies, and in-house HR, tax and compliance teams.
 The official open data XML holds every wording each article ever had, mixed with editorial notes and
 repealed text. Turning it into current, well-cut chunks, and then tracking every reform in your store,
-is days of work plus ongoing maintenance. This Actor does both: the first run emits every chunk, later
-runs emit only what changed plus the deletes you need to apply.
+is days of work plus ongoing maintenance. This Actor does both: run it once to export every chunk, or
+give it a `syncId` and every later run emits only what changed plus the deletes you need to apply.
 
 Data source: the consolidated legislation open data API of the Agencia Estatal Boletín Oficial del
 Estado. This Actor is not affiliated with or endorsed by the Agencia Estatal Boletín Oficial del Estado.
@@ -18,7 +18,8 @@ mantiene sincronizada tu base vectorial:
   tablas se conservan en Markdown.
 - Cada fragmento lleva su ruta (ley > título > capítulo > artículo) y la redacción vigente en la fecha
   que elijas, sin notas editoriales ni texto derogado.
-- La primera ejecución lo emite todo; las siguientes, solo lo que cambió y los borrados (`delete`).
+- Sin `syncId`, cada ejecución exporta todo. Con `syncId`, la primera lo emite todo y las siguientes
+  solo lo que cambió y los borrados (`delete`).
 - Identificadores estables y `point_id` UUID listo para Qdrant; con pgvector funciona igual.
 - Gratis durante el lanzamiento. El texto consolidado es informativo y no tiene valor jurídico.
 
@@ -45,6 +46,9 @@ mantiene sincronizada tu base vectorial:
 
 ## How sync works
 
+Without a `syncId`, every run is a one-off export: it emits an `upsert` for every chunk of every law and
+keeps no state. To keep a vector store in sync, set a `syncId`:
+
 1. The first run emits an `upsert` for every chunk of every law in `laws`.
 2. The Actor remembers what it sent: for each `syncId` and law, the `chunk_id` and `content_hash` of
    every chunk, in a named key-value store called `boe-rag-sync-state` in your own Apify account.
@@ -60,8 +64,9 @@ mantiene sincronizada tu base vectorial:
 ### Tips
 
 - **Schedule it.** Run it on an [Apify Schedule](https://docs.apify.com/platform/schedules), for
-  example weekly, with the same input. Do not let two runs with the same `syncId` overlap: they
-  would race on the saved state.
+  example weekly, with the same input, `syncId` included: without it every scheduled run exports
+  everything again. Do not let two runs with the same `syncId` overlap: they would race on the saved
+  state.
 - **Wiped your store?** The state records what the Actor emitted, not what your store ingested. After
   wiping the store, or if your loader failed, run once with `fullReload: true`: every current chunk is
   emitted again and stale ones are deleted.
@@ -78,7 +83,8 @@ Free during launch: there is no Actor fee, only the Apify platform usage your ru
 
 Later the Actor will move to pay-per-event pricing with one event per article synced, that is, per
 article (or disposition, preamble…) with at least one new or changed chunk. Unchanged articles and
-deletes are never charged; a `fullReload` emits every article again, so it counts every article.
+deletes are never charged; a `fullReload`, like any run without a `syncId`, emits every article, so it
+counts every article.
 
 If a run reaches the spending limit you set, the laws that did not fit end as
 `stopped_by_spending_limit` (their deletes are still emitted) and the next run continues where this
@@ -92,8 +98,8 @@ article twice.
 | `laws` | array of strings | required | Laws to sync. Each item is a BOE id (`BOE-A-2015-11430`), any boe.es URL containing the id, or one of the aliases below. |
 | `asOfDate` | string `YYYY-MM-DD` | today in Spain (Europe/Madrid) | Emit the text in force on this date. A fixed date keeps its own sync state. |
 | `maxChunkChars` | integer, 500–20000 | `2000` | Articles longer than this are split by paragraphs, then by sentences. About 4 characters per token. |
-| `syncId` | string, `A-Z a-z 0-9 _ -`, up to 40 | `default` | Names the sync state kept between runs. Use one per vector store. |
-| `fullReload` | boolean | `false` | Emit every chunk again (and delete stale ones), e.g. after wiping your vector store. |
+| `syncId` | string, `A-Z a-z 0-9 _ -`, up to 40 | none | Turns on incremental sync under this name. Required for scheduled runs; use one per vector store. Empty: a one-off export of every chunk, with no state kept. |
+| `fullReload` | boolean | `false` | With a `syncId`: emit every chunk again (and delete stale ones), e.g. after wiping your vector store. Without one, every run already emits everything. |
 
 ```json
 {
@@ -269,7 +275,7 @@ Each run writes an `OUTPUT` record to its default key-value store (values illust
 ```
 
 - `as_of`: the date whose wording was used. `state`: the sync state used (the `syncId`, plus the date
-  when `asOfDate` is set).
+  when `asOfDate` is set), or `null` for a one-off export.
 - Per law: `upserts` and `deletes` emitted, `articles_charged` (0 while the Actor is free),
   `articles_left_for_later` (articles that did not fit the spending limit) and `chunks_in_force` (the
   law's current chunk count).
