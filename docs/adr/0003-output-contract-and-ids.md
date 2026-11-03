@@ -22,7 +22,8 @@ with the same `fecha_vigencia` (2026-10-23) from different norms. Qdrant also re
 - Delete record: `op, chunk_id, point_id, law_id, reason` with `reason ∈ {superseded, repealed}`.
 - `context_header` and `text` are separate fields; the user decides whether to embed the header.
 - Field names and enum values in English.
-- `content_hash` = SHA-256 of the canonical JSON of the record without `op`.
+- `content_hash` = SHA-256 of the canonical JSON of the record without `op` (superseded by ADR 0004).
+- `point_id` namespace, fixed in code: `dcb6a199-8d7f-4d18-9e68-34e9f6b45dcf`.
 
 ## Alternatives
 

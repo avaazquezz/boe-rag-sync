@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='utf-8'?>
+<response>
+  <status>
+    <code>200</code>
+    <text>ok</text>
+  </status>
+  <data>
+    <texto>
+      <bloque id="no" tipo="nota_inicial">
+        <version id_norma="BOE-A-1996-4943" fecha_publicacion="19951124" fecha_vigencia="19960524">
+          <p class="textoCompleto">Incluye la corrección de errores publicada en BOE núm. 54, de 2 de marzo de 1996. <a class="refPost">Ref. BOE-A-1996-4943</a></p>
+        </version>
+      </bloque>
+      <bloque id="a88" tipo="precepto" titulo="Artículo 88">
+        <version id_norma="BOE-A-2010-9953" fecha_publicacion="20100623" fecha_vigencia="20101223">
+          <p class="articulo">Artículo 88.</p>
+          <p class="parrafo"><span class="parrafo">1. </span> Los jueces o tribunales podrán sustituir, previa audiencia de las partes, en la misma sentencia, o posteriormente en auto motivado, antes de dar inicio a su ejecución, las penas de prisión que no excedan de un año por multa o por trabajos en beneficio de la comunidad, y en los casos de penas de prisión que no excedan de seis meses, también por localización permanente, aunque la Ley no prevea estas penas para el delito de que se trate, cuando las circunstancias personales del reo, la naturaleza del hecho, su conducta y, en particular, el esfuerzo para reparar el daño causado así lo aconsejen, siempre que no se trate de reos habituales, sustituyéndose cada día de prisión por dos cuotas de multa o por una jornada de trabajo o por un día de localización permanente. En estos casos el Juez o Tribunal podrá además imponer al penado la observancia de una o varias obligaciones o deberes previstos en el artículo 83 de este Código, de no haberse establecido como penas en la sentencia, por tiempo que no podrá exceder de la duración de la pena sustituida.</p>
+          <p class="parrafo">Excepcionalmente, podrán los jueces o tribunales sustituir por multa o por multa y trabajos en beneficio de la comunidad, las penas de prisión que no excedan de dos años a los reos no habituales, cuando de las circunstancias del hecho y del culpable se infiera que el cumplimiento de aquéllas habría de frustrar sus fines de prevención y reinserción social. En estos casos, la sustitución se llevará a cabo con los mismos requisitos y en los mismos términos y módulos de conversión establecidos en el párrafo anterior para la pena de multa.</p>
+          <p class="parrafo">En el caso de que el reo hubiera sido condenado por un delito relacionado con la violencia de género, la pena de prisión sólo podrá ser sustituida por la de trabajos en beneficio de la comunidad o localización permanente en lugar distinto y separado del domicilio de la víctima. En estos supuestos, el Juez o Tribunal impondrá adicionalmente, además de la sujeción a programas específicos de reeducación y tratamiento psicológico, la observancia de las obligaciones o deberes previstos en las reglas 1.ª y 2.ª, del apartado 1 del artículo 83 de este Código.</p>
+          <p class="parrafo">2. En el supuesto de incumplimiento en todo o en parte de la pena sustitutiva, la pena de prisión inicialmente impuesta se ejecutará descontando, en su caso, la parte de tiempo a que equivalgan las cuotas satisfechas, de acuerdo con la regla de conversión establecida en el apartado precedente.</p>
+          <p class="parrafo">
+            <span class="parrafo">3. En ningún caso se podrán sustituir penas que sean sustitutivas de otras.</span>
+          </p>
+          <blockquote>
+            <p class="nota_pie">Se modifica los párrafos primero y tercero del apartado 1 por el art. único.20 de la Ley Orgánica 5/2010, de 22 de junio. <a class="refPost">Ref. BOE-A-2010-9953</a></p>
+            <p class="nota_pie">Se modifica el tercer párrafo del apartado 1 por el art. 35 de la Ley Orgánica 1/2004, de 28 de diciembre. <a class="refPost">Ref. BOE-A-2004-21760</a></p>
+            <p class="nota_pie">Se modifica por el art. único.34 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+        <version id_norma="BOE-A-2015-3439" fecha_publicacion="20150331" fecha_vigencia="20150701">
+          <p class="articulo">Artículo 88.</p>
+          <p class="parrafo"><strong>(Suprimido)</strong>.</p>
+          <blockquote>
+            <p class="nota_pie">Se suprime por el art. único.47 de la Ley Orgánica 1/2015, de 30 de marzo. <ins><a class="refPost">Ref. BOE-A-2015-3439</a>.<br /></ins></p>
+            <p class="nota_pie">Se modifica los párrafos primero y tercero del apartado 1 por el art. único.20 de la Ley Orgánica 5/2010, de 22 de junio. <a class="refPost">Ref. BOE-A-2010-9953</a></p>
+            <p class="nota_pie">Se modifica el tercer párrafo del apartado 1 por el art. 35 de la Ley Orgánica 1/2004, de 28 de diciembre. <a class="refPost">Ref. BOE-A-2004-21760</a></p>
+            <p class="nota_pie">Se modifica por el art. único.34 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="lii" tipo="encabezado" titulo="LIBRO II">
+        <version id_norma="BOE-A-1995-25444" fecha_publicacion="19951124" fecha_vigencia="19960524">
+          <p class="libro_num">LIBRO II</p>
+          <p class="libro_tit">Delitos y sus penas</p>
+        </version>
+      </bloque>
+      <bloque id="a225" tipo="precepto" titulo="Artículo 225">
+        <version id_norma="BOE-A-1995-25444" fecha_publicacion="19951124" fecha_vigencia="19960524">
+          <p class="articulo">Artículo 225.</p>
+          <p class="parrafo">Cuando el responsable de los delitos previstos en esta Sección restituya al menor de edad o al incapaz a su domicilio o residencia, o lo deposite en lugar conocido y seguro, sin haberle hecho objeto de vejaciones, sevicias o acto delictivo alguno, ni haber puesto en peligro su vida, salud, integridad física o libertad sexual, el hecho será castigado con la pena de prisión de seis meses a un año o multa de cuatro a ocho meses, siempre y cuando el lugar de estancia del menor de edad o el incapaz haya sido comunicado a sus padres, tutores o guardadores, o la ausencia no hubiera sido superior a veinticuatro horas.</p>
+        </version>
+        <version id_norma="BOE-A-2003-21538" fecha_publicacion="20031126" fecha_vigencia="20041001">
+          <p class="articulo">Artículo 225.</p>
+          <p class="parrafo">Cuando el responsable de los delitos previstos en los dos artículos anteriores restituya al menor de edad o al incapaz a su domicilio o residencia, o lo deposite en lugar conocido y seguro, sin haberle hecho objeto de vejaciones, sevicias o acto delictivo alguno, ni haber puesto en peligro su vida, salud, integridad física o libertad sexual, el hecho será castigado con la pena de prisión de tres meses a un año o multa de seis a 24 meses, siempre y cuando el lugar de estancia del menor de edad o el incapaz haya sido comunicado a sus padres, tutores o guardadores, o la ausencia no hubiera sido superior a 24 horas.</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica por el art. único.74 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+        <version id_norma="BOE-A-2015-3439" fecha_publicacion="20150331" fecha_vigencia="20150701">
+          <p class="articulo">Artículo 225.</p>
+          <p class="parrafo">Cuando el responsable de los delitos previstos en los dos artículos anteriores restituya al menor de edad o a la persona con discapacidad necesitada de especial protección a su domicilio o residencia, o lo deposite en lugar conocido y seguro, sin haberle hecho objeto de vejaciones, sevicias o acto delictivo alguno, ni haber puesto en peligro su vida, salud, integridad física o libertad sexual, el hecho será castigado con la pena de prisión de tres meses a un año o multa de seis a 24 meses, siempre y cuando el lugar de estancia del menor de edad o la persona con discapacidad necesitada de especial protección haya sido comunicado a sus padres, tutores o guardadores, o la ausencia no hubiera sido superior a 24 horas.</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica por el art. único.258 de la Ley Orgánica 1/2015, de 30 de marzo. <a class="refPost">Ref. BOE-A-2015-3439#aunico</a></p>
+            <p class="nota_pie">Se modifica por el art. único.74 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="s2-5" tipo="Cabecera" titulo="SECCIÓN 2">
+        <version id_norma="BOE-A-2002-24044" fecha_publicacion="20021211" fecha_vigencia="20021212">
+          <p class="seccion">Sección 2.ª De la sustracción de menores</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica por el art. 1.1 de la Ley Orgánica 9/2002, de 10 de diciembre. <a class="refPost">Ref. BOE-A-2002-24044</a></p>
+          </blockquote>
+        </version>
+        <version id_norma="BOE-A-1995-25444" fecha_publicacion="19951124" fecha_vigencia="19960524">
+          <p class="seccion">Sección 2.ª Del abandono de familia, menores o incapaces</p>
+        </version>
+      </bloque>
+      <bloque id="a225bis" tipo="precepto" titulo="Artículo 225 bis">
+        <version id_norma="BOE-A-2002-24044" fecha_publicacion="20021211" fecha_vigencia="20021212">
+          <p class="articulo">Artículo 225 bis.</p>
+          <p class="parrafo">1. El progenitor que sin causa justificada para ello sustrajere a su hijo menor será castigado con la pena de prisión de dos a cuatro años e inhabilitación especial para el ejercicio del derecho de patria potestad por tiempo de cuatro a diez años.</p>
+          <p class="parrafo">2. A los efectos de este artículo, se considera sustracción:</p>
+          <p class="parrafo_2">1.º El traslado de un menor de su lugar de residencia sin consentimiento del progenitor con quien conviva habitualmente o de las personas o instituciones a las cuales estuviese confiada su guarda o custodia.</p>
+          <p class="parrafo">2.º La retención de un menor incumpliendo gravemente el deber establecido por resolución judicial o administrativa.</p>
+          <p class="parrafo_2">3. Cuando el menor sea trasladado fuera de España o fuese exigida alguna condición para su restitución la pena señalada en el apartado 1 se impondrá en su mitad superior.</p>
+          <p class="parrafo">4. Cuando el sustractor haya comunicado el lugar de estancia al otro progenitor o a quien corresponda legalmente su cuidado dentro de las veinticuatro horas siguientes a la sustracción con el compromiso de devolución inmediata que efectivamente lleve a cabo, o la ausencia no hubiere sido superior a dicho plazo de veinticuatro horas, quedará exento de pena.</p>
+          <p class="parrafo">Si la restitución la hiciere, sin la comunicación a que se refiere el párrafo anterior, dentro de los quince días siguientes a la sustracción, le será impuesta la pena de prisión de seis meses a dos años.</p>
+          <p class="parrafo">Estos plazos se computarán desde la fecha de la denuncia de la sustracción.</p>
+          <p class="parrafo">5. Las penas señaladas en este artículo se impondrán igualmente a los ascendientes del menor y a los parientes del progenitor hasta el segundo grado de consanguinidad o afinidad que incurran en las conductas anteriormente descritas.</p>
+          <blockquote>
+            <p class="nota_pie">Se añade por el art. 2 de la Ley Orgánica 9/2002, de 10 de diciembre. <a class="refPost">Ref. BOE-A-2002-24044</a></p>
+          </blockquote>
+          <p> </p>
+        </version>
+        <version id_norma="BOE-A-2021-9347" fecha_publicacion="20210605" fecha_vigencia="20210625">
+          <p class="articulo">Artículo 225 bis.</p>
+          <p class="parrafo">1. El progenitor que sin causa justificada para ello sustrajere a su hijo menor será castigado con la pena de prisión de dos a cuatro años e inhabilitación especial para el ejercicio del derecho de patria potestad por tiempo de cuatro a diez años.</p>
+          <p class="parrafo">2. A los efectos de este artículo, se considera sustracción:</p>
+          <p class="parrafo_2">1.º El traslado de una persona menor de edad de su lugar de residencia habitual sin consentimiento del otro progenitor o de las personas o instituciones a las cuales estuviese confiada su guarda o custodia.</p>
+          <p class="parrafo">2.º La retención de una persona menor de edad incumpliendo gravemente el deber establecido por resolución judicial o administrativa.</p>
+          <p class="parrafo_2">3. Cuando el menor sea trasladado fuera de España o fuese exigida alguna condición para su restitución la pena señalada en el apartado 1 se impondrá en su mitad superior.</p>
+          <p class="parrafo">4. Cuando el sustractor haya comunicado el lugar de estancia al otro progenitor o a quien corresponda legalmente su cuidado dentro de las veinticuatro horas siguientes a la sustracción con el compromiso de devolución inmediata que efectivamente lleve a cabo, o la ausencia no hubiere sido superior a dicho plazo de veinticuatro horas, quedará exento de pena.</p>
+          <p class="parrafo">Si la restitución la hiciere, sin la comunicación a que se refiere el párrafo anterior, dentro de los quince días siguientes a la sustracción, le será impuesta la pena de prisión de seis meses a dos años.</p>
+          <p class="parrafo">Estos plazos se computarán desde la fecha de la denuncia de la sustracción.</p>
+          <p class="parrafo">5. Las penas señaladas en este artículo se impondrán igualmente a los ascendientes del menor y a los parientes del progenitor hasta el segundo grado de consanguinidad o afinidad que incurran en las conductas anteriormente descritas.</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica el apartado 2 por la disposición final 6.29 de la Ley Orgánica 8/2021, de 4 de junio. <a class="refPost">Ref. BOE-A-2021-9347#df-6</a></p>
+            <p class="nota_pie">Se añade por el art. 2 de la Ley Orgánica 9/2002, de 10 de diciembre. <a class="refPost">Ref. BOE-A-2002-24044</a></p>
+          </blockquote>
+          <p> </p>
+        </version>
+      </bloque>
+      <bloque id="cx-2" tipo="Encabezado" titulo="CAPÍTULO X">
+        <version id_norma="BOE-A-2003-21538" fecha_publicacion="20031126" fecha_vigencia="20041001">
+          <p class="capitulo_num">CAPÍTULO X</p>
+          <p class="capitulo_tit">De los delitos de corrupción en las transacciones comerciales internacionales</p>
+          <blockquote>
+            <p class="nota_pie">Se añade por el art. único. 142 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+        <version id_norma="BOE-A-2015-3439" fecha_publicacion="20150331" fecha_vigencia="20150701">
+          <p class="capitulo_num">CAPÍTULO X</p>
+          <p class="capitulo_tit">Disposición común a los Capítulos anteriores</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica la rúbrica por el art. único.229 de la Ley Orgánica 1/2015, de 30 de marzo. <a class="refPost">Ref. BOE-A-2015-3439</a>.</p>
+            <p class="nota_pie">Se añade por el art. único. 142 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="a445" tipo="precepto" titulo="Artículo 445">
+        <version id_norma="BOE-A-2010-9953" fecha_publicacion="20100623" fecha_vigencia="20101223">
+          <p class="articulo">Artículo 445.</p>
+          <p class="parrafo">1. Los que mediante el ofrecimiento, promesa o concesión de cualquier beneficio indebido, pecuniario o de otra clase, corrompieren o intentaren corromper, por sí o por persona interpuesta, a los funcionarios públicos extranjeros o de organizaciones internacionales, en beneficio de estos o de un tercero, o atendieran sus solicitudes al respecto, con el fin de que actúen o se abstengan de actuar en relación con el ejercicio de funciones públicas para conseguir o conservar un contrato u otro beneficio irregular en la realización de actividades económicas internacionales, serán castigados con las penas de prisión de dos a seis años y multa de doce a veinticuatro meses, salvo que el beneficio obtenido fuese superior a la cantidad resultante, en cuyo caso la multa será del tanto al duplo del montante de dicho beneficio.</p>
+          <p class="parrafo">Además de las penas señaladas, se impondrá al responsable la pena de prohibición de contratar con el sector público, así como la pérdida de la posibilidad de obtener subvenciones o ayudas públicas y del derecho a gozar de beneficios o incentivos fiscales y de la Seguridad Social, y la prohibición de intervenir en transacciones comerciales de trascendencia pública por un periodo de siete a doce años.</p>
+          <p class="parrafo">Las penas previstas en los párrafos anteriores se impondrán en su mitad superior si el objeto del negocio versara sobre bienes o servicios humanitarios o cualesquiera otros de primera necesidad.</p>
+          <p class="parrafo">2. Cuando de acuerdo con lo establecido en el artículo 31 bis de este Código una persona jurídica sea responsable de este delito, se le impondrá la pena de multa de dos a cinco años, o la del triple al quíntuple del beneficio obtenido si la cantidad resultante fuese más elevada.</p>
+          <p class="parrafo">Atendidas las reglas establecidas en el artículo 66 bis, los jueces y tribunales podrán asimismo imponer las penas recogidas en las letras b) a g) del apartado 7 del artículo 33.</p>
+          <p class="parrafo">3. A los efectos de este artículo se entiende por funcionario público extranjero:</p>
+          <p class="parrafo_2">a) Cualquier persona que ostente un cargo legislativo, administrativo o judicial de un país extranjero, tanto por nombramiento como por elección.</p>
+          <p class="parrafo">b) Cualquier persona que ejerza una función pública para un país extranjero, incluido un organismo público o una empresa pública.</p>
+          <p class="parrafo">c) Cualquier funcionario o agente de una organización internacional pública.</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica por el art. único.133 de la Ley Orgánica 5/2010, de 22 de junio. <a class="refPost">Ref. BOE-A-2010-9953</a></p>
+            <p class="nota_pie">Se modifica por el art. único.143 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+        <version id_norma="BOE-A-2015-3439" fecha_publicacion="20150331" fecha_vigencia="20150701">
+          <p class="articulo">Artículo 445.</p>
+          <p class="parrafo">La provocación, la conspiración y la proposición para cometer los delitos previstos en este Título se castigará, respectivamente, con la pena inferior en uno o dos grados.</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica por el art. único.230 de la Ley Orgánica 1/2015, de 30 de marzo. <a class="refPost">Ref. BOE-A-2015-3439</a>.</p>
+            <p class="nota_pie">Se modifica por el art. único.133 de la Ley Orgánica 5/2010, de 22 de junio. <a class="refPost">Ref. BOE-A-2010-9953</a></p>
+            <p class="nota_pie">Se modifica por el art. único.143 de la Ley Orgánica 15/2003, de 25 de noviembre. <a class="refPost">Ref. BOE-A-2003-21538</a></p>
+          </blockquote>
+        </version>
+      </bloque>
+      </texto>
+  </data>
+</response>

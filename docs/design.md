@@ -30,15 +30,29 @@ returns every block of a law with **all** its versions:
 ```
 
 Facts that shape the design:
-- Hierarchy is flat: `encabezado` blocks (classes `libro_num`, `titulo_num`, `capitulo_num`, `seccion`,
-  `subseccion`, plus irregular ones in the Civil Code) are siblings of the articles; the path is rebuilt
-  by level.
-- Block ids are not uniform across laws (`a4`, `art72`, `as127a130`); they are treated as opaque.
-- Repealed articles keep a last version titled "(Suprimido)", "(Derogado)", "(Sin contenido)" or
-  "(Anulado)".
-- Editorial notes (`nota_pie`, `blockquote`) are noise for embeddings and are excluded from `text`.
-- Two versions of a block can share `fecha_vigencia` (Workers' Statute art. 37, 2026-10-23); ties are
-  broken by document order.
+- Hierarchy is flat: heading blocks are siblings of the articles and the path is rebuilt by level
+  (`anexo` 0 > `libro` 1 > `titulo` 2 > `capitulo` 3 > `seccion` 4 > `subseccion` 5). Irregularities
+  handled: heading blocks typed `Cabecera`/`Encabezado` (Penal Code); one heading block opening two levels
+  (Civil Code "TÍTULO III" + its first section); lone `capitulo_num`/`capitulo_tit`; a heading typed as
+  `precepto` (Penal Code "TÍTULO XIX bis").
+- Dispositions (adicionales, transitorias, finales…) usually have no heading of their own, so a block titled
+  "Disposición…" drops titles and chapters from the path; a "DISPOSICIONES TRANSITORIAS" heading sits at
+  level 1. "Disposiciones generales" is an ordinary chapter title, not a dispositions heading.
+- Block ids are not uniform even within a law (`a1` and `art2` in the Civil Code, `as127a130`); opaque.
+- A repealed block keeps a last version with only its heading and a marker ("(Suprimido).", "(Derogada)",
+  "(Sin contenido)", "(Anulado)"); a live article may still say "b) (Suprimida)." for one letter.
+- Editorial notes are `p.nota_pie*` and every `blockquote` with a `class` (`soloTexto`, `noDesdeYYYYMMDD`,
+  `siempreSeVe`…). They often quote the previous wording ("Redacción anterior"), so they are excluded from
+  `text`; classless blockquotes hold quoted legal text and are kept as Markdown quotes.
+- A version without `fecha_vigencia` never took effect (Civil Code art. 56, 2015) and is ignored.
+- A non-existent law id returns HTTP 400.
+- Versions are not in date order (8 of 4,095 blocks in five laws), and a later norm can take effect
+  before an earlier one's deferred date. The wording in force at a date is, among the versions already
+  in force, the one from the **most recently published** norm (lex posterior); full ties go to document
+  order. This matches boe.es: income tax art. 7 has a norm published Oct 3 effective Oct 23 and one
+  published Oct 7 effective Oct 8, and boe.es shows the latter. Picking the highest `fecha_vigencia`
+  would serve the wrong text. Workers' Statute art. 37 has two versions effective the same day; the
+  later-published one wins.
 - The API does not say when a version was added to the consolidated text, so the state of a past run
   cannot be rebuilt from today's XML (see ADR 0002).
 - Sizes: 1.4–3.7 MB per law; the income tax law has articles up to 56k characters and 86 tables.
