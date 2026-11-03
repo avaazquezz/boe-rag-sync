@@ -8,7 +8,7 @@ import httpx
 import pytest
 
 import boe_rag_sync.main as shell
-from boe_rag_sync.main import DEFAULT_MAX_CHUNK_CHARS, DEFAULT_SYNC_ID, Settings
+from boe_rag_sync.main import DEFAULT_MAX_CHUNK_CHARS, Settings
 
 ROOT = Path(__file__).parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
@@ -16,11 +16,14 @@ LAW_ID = "BOE-A-2015-11430"
 
 
 def test_local_defaults_match_the_input_schema() -> None:
-    # chunk ids depend on maxChunkChars and the manifest on syncId: a local run and a platform
-    # run with the same input must produce the same chunks and touch the same state.
+    # chunk ids depend on maxChunkChars: a local run and a platform run with the same input must
+    # produce the same chunks.
     properties = json.loads((ROOT / ".actor" / "input_schema.json").read_text())["properties"]
     assert properties["maxChunkChars"]["default"] == DEFAULT_MAX_CHUNK_CHARS
-    assert properties["syncId"]["default"] == DEFAULT_SYNC_ID
+    # ADR 0005: incremental sync is opt-in. The Store's daily test runs the prefilled input and
+    # needs a non-empty dataset, which a stateful default would only produce on its first day.
+    assert "default" not in properties["syncId"]
+    assert "prefill" not in properties["syncId"]
 
 
 class FakeActor:
@@ -52,7 +55,7 @@ class FakeActor:
         self.manifests[key] = value
 
 
-def run(actor: FakeActor, *, billing: bool = True) -> dict[str, Any]:
+def run(actor: FakeActor, *, billing: bool = True, stateless: bool = False) -> dict[str, Any]:
     def serve(request: httpx.Request) -> httpx.Response:
         part = "meta" if request.url.path.endswith("/metadatos") else "texto"
         return httpx.Response(200, content=(FIXTURES / f"et_{part}.xml").read_bytes())
@@ -62,12 +65,13 @@ def run(actor: FakeActor, *, billing: bool = True) -> dict[str, Any]:
         max_chars=2000,
         full_reload=False,
         billing=billing,
-        state_prefix="default",
+        state_prefix=None if stateless else "default",
     )
 
     async def call() -> dict[str, Any]:
         async with httpx.AsyncClient(transport=httpx.MockTransport(serve)) as client:
-            return await shell._sync_law(client, actor, LAW_ID, settings)  # type: ignore[arg-type]  # noqa: SLF001
+            state = None if stateless else actor
+            return await shell._sync_law(client, state, LAW_ID, settings)  # type: ignore[arg-type]  # noqa: SLF001
 
     return asyncio.run(call())
 
@@ -107,6 +111,16 @@ def test_free_runs_never_charge(actor: FakeActor) -> None:
     assert "charge" not in [name for name, _ in actor.calls]
     assert result["status"] == "synced"
     assert result["articles_charged"] == 0
+
+
+def test_without_sync_id_every_run_exports_everything_and_keeps_no_state(actor: FakeActor) -> None:
+    actor.affordable = None
+    for _ in range(2):
+        actor.calls.clear()
+        result = run(actor, stateless=True)
+        assert result["upserts"] == result["chunks_in_force"] > 0
+        assert [name for name, _ in actor.calls] == ["push", "charge"]
+    assert actor.manifests == {}
 
 
 def test_actor_config_points_to_existing_valid_files() -> None:
