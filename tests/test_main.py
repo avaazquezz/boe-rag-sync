@@ -107,3 +107,13 @@ def test_free_runs_never_charge(actor: FakeActor) -> None:
     assert "charge" not in [name for name, _ in actor.calls]
     assert result["status"] == "synced"
     assert result["articles_charged"] == 0
+
+
+def test_actor_config_points_to_existing_valid_files() -> None:
+    # The Store refuses to publish without an output schema; a missing or broken file would only
+    # show up on the platform.
+    actor_dir = ROOT / ".actor"
+    config = json.loads((actor_dir / "actor.json").read_text())
+    for ref in (config["input"], config["output"], config["storages"]["dataset"]):
+        json.loads((actor_dir / ref).read_text())
+    assert (actor_dir / config["dockerfile"]).is_file()
