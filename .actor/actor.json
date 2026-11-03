@@ -1,6 +1,6 @@
 {
   "actorSpecification": 1,
-  "name": "boe-rag-sync",
+  "name": "spanish-laws-rag",
   "title": "Spanish Laws for RAG — chunked & kept in sync",
   "description": "Turns Spanish consolidated laws into structure-aware, RAG-ready chunks with the wording in force, and keeps your vector store in sync with upsert and delete records.",
   "version": "0.1",
