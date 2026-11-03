@@ -44,6 +44,23 @@ mantiene sincronizada tu base vectorial:
   from it, ready to use as a Qdrant point id.
 - **Incremental sync with deletes**, explained below.
 
+## Quick start
+
+- **In Apify Console:** keep the prefilled input (the Workers' Statute) and press Start. The chunks land
+  in the run's dataset, which you can export as JSON, CSV or Excel.
+- **From the API:** one request runs the Actor and returns its records.
+
+```bash
+curl -X POST "https://api.apify.com/v2/acts/VazquezDev~spanish-laws-rag/run-sync-get-dataset-items" \
+  -H "Authorization: Bearer $APIFY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"laws": ["estatuto-trabajadores"]}'
+```
+
+The synchronous endpoint waits up to 5 minutes. For many laws, or for scheduled syncs, start the run
+normally and read its dataset when it finishes, as the loader in
+[Load into a vector store](#load-into-a-vector-store) does.
+
 ## How sync works
 
 Without a `syncId`, every run is a one-off export: it emits an `upsert` for every chunk of every law and
@@ -299,6 +316,52 @@ laws that failed.
 - Headings (titles, chapters, sections) use their latest wording, whatever `asOfDate`.
 - Laws removed from `laws` are not cleaned up automatically: their chunks stay in your store until you
   delete them yourself (every record carries `law_id`).
+
+## How it is built
+
+The source code is on [GitHub](https://github.com/avaazquezz/boe-rag-sync), and the Actor is published
+on [Apify Store](https://apify.com/VazquezDev/spanish-laws-rag). It is written in Python 3.14 with the
+Apify SDK and [uv](https://docs.astral.sh/uv/), as a functional core with an imperative shell: only the
+HTTP fetch and the Apify shell do I/O, and everything in between is pure functions.
+
+| Module | What it does |
+|---|---|
+| `boe.py` | Downloads a law's metadata and text, retrying transient errors, and parses the XML into articles, their wordings and the heading hierarchy, dropping editorial notes and flagging repeals. |
+| `chunking.py` | Picks each article's wording in force at the date (lex posterior), splits it by paragraphs, sentences or table rows, and builds the records and their ids. |
+| `sync.py` | Compares the current chunks with the saved state and returns the upserts, the deletes and the new state, without touching any storage. |
+| `aliases.py` | The 20 law aliases and their short names. |
+| `main.py` | The Apify shell: reads the input, and for each law delivers the records, saves the state and charges, in that order. |
+
+How it is verified:
+
+- **Real data, no network.** The tests run offline on fixtures trimmed from the real BOE XML of four
+  laws (Workers' Statute, Civil Code, Penal Code and income tax law), so every source quirk the parser
+  handles is covered by an actual example of it.
+- **Checks on every commit.** Strict mypy, Ruff with every rule enabled except a few documented ones,
+  and pytest run in a pre-commit hook and again in CI on every pull request.
+- **A weekly canary.** Every Monday CI checks against the live BOE API that the 20 aliases still point
+  to laws in force and that a real law still parses and chunks, so a change in the source fails a check
+  instead of silently producing wrong chunks.
+
+Design notes live in the repository: [docs/design.md](https://github.com/avaazquezz/boe-rag-sync/blob/main/docs/design.md)
+covers the source data and its quirks, the architecture and the contracts, and the decision records
+explain the choices that are expensive to change:
+
+1. [Python, the Apify SDK and uv](https://github.com/avaazquezz/boe-rag-sync/blob/main/docs/adr/0001-python-apify-uv.md)
+2. [Stateful sync with a manifest in a named key-value store](https://github.com/avaazquezz/boe-rag-sync/blob/main/docs/adr/0002-stateful-sync-manifest.md)
+3. [Output record contract and chunk ids](https://github.com/avaazquezz/boe-rag-sync/blob/main/docs/adr/0003-output-contract-and-ids.md)
+4. [The content hash excludes law_updated_at](https://github.com/avaazquezz/boe-rag-sync/blob/main/docs/adr/0004-content-hash-excludes-law-updated-at.md)
+5. [Incremental sync is opt-in through syncId](https://github.com/avaazquezz/boe-rag-sync/blob/main/docs/adr/0005-incremental-sync-is-opt-in.md)
+
+To run it locally, without the Apify CLI:
+
+```bash
+uv sync
+uv run pytest
+mkdir -p storage/key_value_stores/default
+echo '{"laws": ["BOE-A-2015-11430"]}' > storage/key_value_stores/default/INPUT.json
+uv run python -m boe_rag_sync   # records in storage/datasets/default/
+```
 
 ## Legal
 
