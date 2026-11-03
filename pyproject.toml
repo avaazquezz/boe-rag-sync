@@ -1,0 +1,36 @@
+[project]
+name = "boe-rag-sync"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "apify>=4.2.0",
+    "httpx>=0.28.1",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pre-commit>=4.7.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["ALL"]
+# CPY: no per-file license headers.
+# TC: an application gains nothing from TYPE_CHECKING-only imports.
+ignore = ["D", "COM812", "ISC001", "CPY", "TC"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "PLR2004", "INP001"]
+
+[tool.mypy]
+strict = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
