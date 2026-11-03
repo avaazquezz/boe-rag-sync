@@ -124,6 +124,10 @@ schedules must not overlap.
 Input: `laws` (required; BOE id, URL or alias), `asOfDate` (default: today in Europe/Madrid),
 `maxChunkChars` (default 2000), `syncId` (default `"default"`), `fullReload` (default false).
 
+`laws` entries are resolved before any work (`aliases.resolve`): a typo fails the run at once;
+duplicates are synced once. `context_header` = `[name > hierarchy… > block title]`, where `name` is the
+short name from `aliases.py` ("Ley del IRPF") or, for any other law, the official title.
+
 Ids: `chunk_id = {law_id}:{block_id}:{i}`, `point_id = uuid5(NAMESPACE, chunk_id)` (Qdrant only accepts
 unsigned integers or UUIDs). See ADR 0003 for the record schema.
 
