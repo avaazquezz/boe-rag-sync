@@ -9,6 +9,7 @@ from collections.abc import Iterable, Sequence
 from datetime import date
 from typing import Literal, TypedDict
 
+from .aliases import SHORT_NAMES
 from .boe import Block, Law, Table, Version
 
 # Never change: every point_id derives from it, so a new namespace forces a full reload on users.
@@ -106,7 +107,9 @@ def build_records(law: Law, as_of: date, max_chars: int) -> list[Record]:
         if version is None or version.repealed or not version.content:
             continue
         chunks = split(version.content, max_chars)
-        header = "[" + " > ".join(filter(None, (law.title, *block.hierarchy, block.title))) + "]"
+        # A short name ("Ley del IRPF") carries the meaning of the official title in a few words.
+        name = SHORT_NAMES.get(law.id, law.title)
+        header = "[" + " > ".join(filter(None, (name, *block.hierarchy, block.title))) + "]"
         # Only a wording published later can displace this one (see version_at).
         until = min(
             (v.in_force_from for v in block.versions if _precedence(v) > _precedence(version)),

@@ -6,10 +6,10 @@
     "laws": {
       "title": "Laws",
       "type": "array",
-      "description": "BOE ids of consolidated laws, for example BOE-A-2015-11430 (Workers' Statute).",
+      "description": "Laws to sync: a BOE id (BOE-A-2015-11430), any boe.es URL that contains one, or an alias such as estatuto-trabajadores, codigo-civil, codigo-penal, constitucion, irpf, iva, lopdgdd (full list in the README).",
       "editor": "stringList",
       "prefill": [
-        "BOE-A-2015-11430"
+        "estatuto-trabajadores"
       ]
     },
     "asOfDate": {
