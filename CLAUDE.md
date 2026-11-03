@@ -27,12 +27,13 @@ everything else is pure and tested against fixtures.
 - `boe.py` — fetch + `parse_law`: XML into `Law`/`Block`/`Version`/`Table`, hierarchy rebuilt from
   heading blocks, editorial notes dropped, repeals flagged. The BOE XML quirks it absorbs are listed in
   `docs/design.md`; read them before touching the parser.
-- `chunking.py` — version in force at a date, cascade splitting, records per ADR 0003
+- `chunking.py` — version in force at a date (lex posterior, see design.md), cascade splitting, records per ADR 0003 and 0004
 - `sync.py` — manifest diff (phase 3)
 - `main.py` — Apify shell
 
 Tests: `test_boe.py` (parser on fixtures, fetch retries), `test_chunking.py` (splitter and records on
-hand-built objects), `test_pipeline.py` (fixture XML → records). Fixtures are trimmed from real laws:
+hand-built objects), `test_pipeline.py` (fixture XML → records), `test_main.py` (local defaults match
+the input schema). Fixtures are trimmed from real laws:
 Workers' Statute (`et`), Civil Code (`cc`), Penal Code (`cp`), income tax law (`irpf`).
 
 ## Conventions

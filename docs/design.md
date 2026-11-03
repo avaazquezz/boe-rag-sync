@@ -46,8 +46,13 @@ Facts that shape the design:
   `text`; classless blockquotes hold quoted legal text and are kept as Markdown quotes.
 - A version without `fecha_vigencia` never took effect (Civil Code art. 56, 2015) and is ignored.
 - A non-existent law id returns HTTP 400.
-- Two versions of a block can share `fecha_vigencia` (Workers' Statute art. 37, 2026-10-23); ties are
-  broken by document order.
+- Versions are not in date order (8 of 4,095 blocks in five laws), and a later norm can take effect
+  before an earlier one's deferred date. The wording in force at a date is, among the versions already
+  in force, the one from the **most recently published** norm (lex posterior); full ties go to document
+  order. This matches boe.es: income tax art. 7 has a norm published Oct 3 effective Oct 23 and one
+  published Oct 7 effective Oct 8, and boe.es shows the latter. Picking the highest `fecha_vigencia`
+  would serve the wrong text. Workers' Statute art. 37 has two versions effective the same day; the
+  later-published one wins.
 - The API does not say when a version was added to the consolidated text, so the state of a past run
   cannot be rebuilt from today's XML (see ADR 0002).
 - Sizes: 1.4–3.7 MB per law; the income tax law has articles up to 56k characters and 86 tables.
