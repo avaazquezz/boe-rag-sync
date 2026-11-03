@@ -208,8 +208,8 @@ are illustrative and `text` is shortened.
 ## Load into a vector store
 
 The Actor does not compute embeddings or write to your store: a short loader applies each run's records.
-This one uses [`apify-client`](https://pypi.org/project/apify-client/) and
-[`qdrant-client`](https://pypi.org/project/qdrant-client/) (`pip install apify-client qdrant-client`):
+This one uses [apify-client](https://pypi.org/project/apify-client/) and
+[qdrant-client](https://pypi.org/project/qdrant-client/) (`pip install apify-client qdrant-client`):
 
 ```python
 from apify_client import ApifyClient
