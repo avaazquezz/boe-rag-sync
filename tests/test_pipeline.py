@@ -39,6 +39,16 @@ def test_picks_the_wording_in_force_at_the_date() -> None:
     assert {r["version_norm_id"] for r in of_block("et", "a37")} == {"BOE-A-2026-21872"}
 
 
+def test_matches_the_wording_boe_es_shows_when_versions_are_out_of_date_order() -> None:
+    # Income tax art. 7: the XML ends with a version effective Oct 23 (norm published Oct 3)
+    # followed by one effective Oct 8 (norm published Oct 7). boe.es shows the latter's letter ñ.
+    chunks = of_block("irpf", "a7")
+    assert {r["version_norm_id"] for r in chunks} == {"BOE-A-2026-20823"}
+    assert "Cualquier disposición del citado capital antes de la finalización de dicho plazo" in (
+        " ".join(r["text"] for r in chunks)
+    )
+
+
 def test_repealed_articles_produce_no_records() -> None:
     assert of_block("cp", "a88") == []
     assert of_block("cc", "as127a130") == []

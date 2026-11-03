@@ -89,10 +89,18 @@ sectores y trabajos que por sus peculiaridades así lo requieran.
 
 
 def version(
-    day: date, *content: str | Table, norm_id: str = LAW_ID, repealed: bool = False
+    day: date,
+    *content: str | Table,
+    norm_id: str = LAW_ID,
+    repealed: bool = False,
+    published: date | None = None,
 ) -> Version:
     return Version(
-        norm_id=norm_id, published=day, in_force_from=day, content=content, repealed=repealed
+        norm_id=norm_id,
+        published=published or day,
+        in_force_from=day,
+        content=content,
+        repealed=repealed,
     )
 
 
@@ -132,6 +140,29 @@ def test_version_at_breaks_date_ties_by_document_order() -> None:
     day = date(2026, 10, 23)
     a37 = block(version(day, norm_id="first"), version(day, norm_id="second"))
     assert version_at(a37, day) == a37.versions[1]
+
+
+def test_version_at_lets_the_later_published_norm_prevail() -> None:
+    # Income tax art. 7, Oct 2026: a norm published Oct 3 sets a wording from Oct 23; a later norm
+    # published Oct 7 sets another from Oct 8. boe.es shows the later norm's wording after Oct 23.
+    a7 = block(
+        version(date(2026, 10, 23), norm_id="20528", published=date(2026, 10, 3)),
+        version(date(2026, 10, 8), norm_id="20823", published=date(2026, 10, 7)),
+    )
+    assert version_at(a7, date(2026, 10, 7)) is None
+    assert version_at(a7, date(2026, 10, 10)) == a7.versions[1]
+    assert version_at(a7, date(2026, 11, 3)) == a7.versions[1]
+
+
+def test_in_force_until_ignores_earlier_published_wordings() -> None:
+    a7 = block(
+        version(date(2026, 10, 23), "Deferred.", published=date(2026, 10, 3)),
+        version(date(2026, 10, 8), "Current.", published=date(2026, 10, 7)),
+        version(date(2027, 1, 1), "Next.", published=date(2026, 10, 9)),
+    )
+    (record,) = build_records(law(a7), date(2026, 11, 3), 2000)
+    assert record["text"] == "Current."
+    assert record["in_force_until"] == "2027-01-01"
 
 
 # split

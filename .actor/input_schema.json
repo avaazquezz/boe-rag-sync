@@ -24,7 +24,7 @@
       "type": "integer",
       "description": "Articles longer than this are split by paragraphs, then by sentences. About 4 characters per token.",
       "default": 2000,
-      "minimum": 200,
+      "minimum": 500,
       "maximum": 20000,
       "unit": "characters"
     }

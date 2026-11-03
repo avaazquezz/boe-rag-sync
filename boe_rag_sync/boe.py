@@ -33,10 +33,9 @@ HEADING_LEVELS = {
 HEADING_TYPES = frozenset({"encabezado", "cabecera"})
 SKIPPED_TYPES = frozenset({"firma", "nota_inicial"})
 TYPE_TITLES = {"preambulo": "Preámbulo", "parte_dispositiva": "Parte dispositiva"}
-REPEALED = re.compile(r"\((?:suprimid|derogad|sin contenido|anulad)", re.IGNORECASE)
-REPEALED_ALONE = re.compile(
-    r"\((?:suprimid|derogad|sin contenido|anulad)[a-z]*\)\.?", re.IGNORECASE
-)
+# The whole parenthesised marker ("(Suprimido)", "(Derogados)", "(Sin contenido)"), not an open
+# citation such as "(derogado parcialmente por …)".
+REPEALED = re.compile(r"\((?:suprimid|derogad|sin contenido|anulad)[a-z]*\)", re.IGNORECASE)
 # Heading, optional heading subtitle (headings typed as articles) and the marker.
 MAX_REPEALED_UNITS = 3
 # Not "Disposiciones generales", which is an ordinary chapter title.
@@ -138,11 +137,16 @@ def _blocks(root: ET.Element) -> Iterator[Block]:
     stack: list[tuple[int, str]] = []
     for element in root.iter("bloque"):
         kind = element.attrib["tipo"]
-        versions = element.findall("version")
+        # A version without an entry-into-force date never took effect (it was replaced before
+        # its date arrived, e.g. Civil Code art. 56 in 2015).
+        versions = [v for v in element.findall("version") if v.get("fecha_vigencia")]
         if kind.lower() in HEADING_TYPES:
+            # The XML is not in date order: the latest wording is the one from the most recently
+            # published norm (same rule as chunking.version_at). Penal Code s2-5 lists 2002 first.
             # ponytail: headings use their latest wording whatever the asOfDate; renamed
             # headings are rare. Version them like blocks if an eval shows it matters.
-            for level, label in _headings(versions[-1]):
+            latest = max(reversed(versions), key=_precedence, default=None)
+            for level, label in _headings(latest) if latest is not None else []:
                 stack = [h for h in stack if h[0] < level] + [(level, label)]
             continue
         if kind in SKIPPED_TYPES:
@@ -157,12 +161,13 @@ def _blocks(root: ET.Element) -> Iterator[Block]:
             type=kind,
             title=title,
             hierarchy=tuple(label for _, label in stack),
-            # A version without an entry-into-force date never took effect (it was replaced
-            # before its date arrived, e.g. Civil Code art. 56 in 2015).
-            versions=tuple(
-                _version(v, element.attrib["id"]) for v in versions if v.get("fecha_vigencia")
-            ),
+            versions=tuple(_version(v, element.attrib["id"]) for v in versions),
         )
+
+
+def _precedence(version: ET.Element) -> tuple[str, str]:
+    # YYYYMMDD strings compare like dates.
+    return version.attrib["fecha_publicacion"], version.attrib["fecha_vigencia"]
 
 
 def _headings(version: ET.Element) -> list[tuple[int, str]]:
@@ -201,12 +206,15 @@ def _version(element: ET.Element, block_id: str) -> Version:
 
 def _is_repealed(content: tuple[str | Table, ...]) -> bool:
     # A repealed block keeps only its heading and a marker: "(Suprimido)." on its own line or
-    # inside the heading. A live article can still contain "b) (Suprimida)." for one letter.
+    # inside the heading ("Sección 1.ª (Suprimida)"). A live article can still contain
+    # "b) (Suprimida)." for one letter, which is neither.
     texts = [unit for unit in content if isinstance(unit, str)]
     return (
         bool(texts)
         and len(content) <= MAX_REPEALED_UNITS
-        and (bool(REPEALED.search(texts[0])) or any(REPEALED_ALONE.fullmatch(t) for t in texts))
+        and (
+            bool(REPEALED.search(texts[0])) or any(REPEALED.fullmatch(t.rstrip(".")) for t in texts)
+        )
     )
 
 

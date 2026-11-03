@@ -52,9 +52,16 @@ class Record(TypedDict):
 
 def version_at(block: Block, day: date) -> Version | None:
     in_force = [v for v in block.versions if v.in_force_from <= day]
-    # max() keeps the first of equal keys; reversing makes the later version in document order win
-    # when two versions share an entry-into-force date.
-    return max(reversed(in_force), key=lambda v: v.in_force_from, default=None)
+    # Among the wordings already in force, the most recently published norm prevails (lex
+    # posterior), which is what boe.es shows: income tax art. 7 has a norm published Oct 3 effective
+    # Oct 23 and a later one published Oct 7 effective Oct 8, and the latter is the text in force.
+    # The XML is not in date order. max() keeps the first of equal keys, so reversing makes the
+    # later version in document order win a full tie.
+    return max(reversed(in_force), key=_precedence, default=None)
+
+
+def _precedence(version: Version) -> tuple[date, date]:
+    return version.published, version.in_force_from
 
 
 def split(content: Sequence[str | Table], max_chars: int) -> list[str]:
@@ -99,8 +106,9 @@ def build_records(law: Law, as_of: date, max_chars: int) -> list[Record]:
             continue
         chunks = split(version.content, max_chars)
         header = "[" + " > ".join(filter(None, (law.title, *block.hierarchy, block.title))) + "]"
+        # Only a wording published later can displace this one (see version_at).
         until = min(
-            (v.in_force_from for v in block.versions if v.in_force_from > version.in_force_from),
+            (v.in_force_from for v in block.versions if _precedence(v) > _precedence(version)),
             default=None,
         )
         for index, text in enumerate(chunks):
@@ -168,7 +176,9 @@ def _split_table(table: Table, max_chars: int) -> list[str]:
     whole = "\n".join([head, *rows])
     if len(whole) <= max_chars or not rows:
         return [whole]
-    # A row that does not fit even alone under the header is packed alone: the only oversize chunk.
+    # A row that does not fit even alone under the header is packed alone, oversize. When the header
+    # itself exceeds the limit every row ends up like that; the schema minimum (500) keeps that out
+    # of the five laws measured (0 oversize chunks at 500, 59 at 200).
     bodies = _pack([("\n", row) for row in rows], max_chars - len(head) - 1)
     return [f"{head}\n{body}" for body in bodies]
 

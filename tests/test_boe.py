@@ -6,7 +6,7 @@ from pathlib import Path
 import httpx
 import pytest
 
-from boe_rag_sync.boe import ATTEMPTS, Block, Law, Table, fetch, parse_law
+from boe_rag_sync.boe import ATTEMPTS, Block, Law, Table, _is_repealed, fetch, parse_law
 
 FIXTURES = Path(__file__).parent / "fixtures"
 LAW_IDS = {
@@ -56,9 +56,9 @@ def test_headings_become_hierarchy_not_blocks() -> None:
 
 def test_penal_code_heading_types_cabecera_and_encabezado_are_headings() -> None:
     assert [b.id for b in law("cp").blocks] == ["a88", "a225", "a225bis", "a445"]
-    assert block("cp", "a225bis").hierarchy[-1] == (
-        "Sección 2.ª Del abandono de familia, menores o incapaces"
-    )
+    # The XML lists the 2002 wording of this heading before the 1995 one; the 2002 wording rules
+    # (art. 225 bis is the child abduction offence that section was created for).
+    assert block("cp", "a225bis").hierarchy[-1] == "Sección 2.ª De la sustracción de menores"
     assert block("cp", "a445").hierarchy[-1].startswith("CAPÍTULO X.")
 
 
@@ -167,3 +167,23 @@ def test_fetch_gives_up_after_the_last_attempt() -> None:
     with pytest.raises(httpx.HTTPStatusError):
         run_fetch(handler)
     assert len(calls) == ATTEMPTS
+
+
+@pytest.mark.parametrize(
+    ("content", "repealed"),
+    [
+        (("**Artículo 88.**", "(Suprimido)."), True),
+        (("**Arts. 127 a 130 (Derogados)**",), True),
+        # A heading typed as an article in the Penal Code.
+        (("Sección 1.ª (Suprimida)",), True),
+        (("TÍTULO XIX bis", "De los delitos de corrupción", "(Suprimido)"), True),
+        # One letter repealed inside a live article.
+        (("**Artículo 7.**", "a) Texto vigente.", "b) (Suprimida)."), False),
+        # An open citation is not a repeal marker.
+        (("Se mantiene el Real Decreto 1/1995 (derogado parcialmente por la Ley 2/2000).",), False),
+        # Too much content left for a repealed block.
+        (("**Artículo 9.**", "(Suprimido).", "Uno.", "Dos."), False),
+    ],
+)
+def test_repeal_detection(content: tuple[str, ...], *, repealed: bool) -> None:
+    assert _is_repealed(content) is repealed
