@@ -8,7 +8,9 @@
       "type": "array",
       "description": "BOE ids of consolidated laws, for example BOE-A-2015-11430 (Workers' Statute).",
       "editor": "stringList",
-      "prefill": ["BOE-A-2015-11430"]
+      "prefill": [
+        "BOE-A-2015-11430"
+      ]
     },
     "asOfDate": {
       "title": "As of date",
@@ -16,7 +18,18 @@
       "description": "Return the text in force on this date (YYYY-MM-DD). Defaults to today in Spain.",
       "editor": "datepicker",
       "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
+    },
+    "maxChunkChars": {
+      "title": "Max chunk size (characters)",
+      "type": "integer",
+      "description": "Articles longer than this are split by paragraphs, then by sentences. About 4 characters per token.",
+      "default": 2000,
+      "minimum": 200,
+      "maximum": 20000,
+      "unit": "characters"
     }
   },
-  "required": ["laws"]
+  "required": [
+    "laws"
+  ]
 }

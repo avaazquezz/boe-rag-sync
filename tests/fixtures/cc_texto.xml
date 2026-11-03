@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='utf-8'?>
+<response>
+  <status>
+    <code>200</code>
+    <text>ok</text>
+  </status>
+  <data>
+    <texto>
+      <bloque id="fi" tipo="firma">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="parrafo_2">Dado en San Ildefonso a veinticuatro de Julio de mil ochocientos ochenta y nueve.</p>
+          <p class="firma_rey">MARÍA CRISTINA</p>
+          <p class="firma_ministro">El Ministro de Gracia y Justicia,</p>
+          <p class="firma_ministro">JOSÉ CANALEJAS Y MÉNDEZ</p>
+          <p class="firma_ministro"> </p>
+        </version>
+      </bloque>
+      <bloque id="codigocivil" tipo="encabezado" titulo="CÓDIGO CIVIL">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="anexo">CÓDIGO CIVIL</p>
+        </version>
+      </bloque>
+      <bloque id="tpreliminar" tipo="encabezado" titulo="TÍTULO PRELIMINAR">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="titulo_num">TÍTULO PRELIMINAR</p>
+          <p class="titulo_tit">De las Leyes, de sus efectos y de las reglas generales para su aplicación</p>
+        </version>
+        <version id_norma="BOE-A-1974-1083" fecha_publicacion="19740709" fecha_vigencia="19740729">
+          <p class="titulo_num">TÍTULO PRELIMINAR</p>
+          <p class="titulo_tit">De las normas jurídicas, su aplicación y eficacia</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica la rúbrica por el Decreto 1836/1974, de 31 de mayo. <a class="refPost">Ref. BOE-A-1974-1083</a>.</p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="ci" tipo="encabezado" titulo="CAPÍTULO I">
+        <version id_norma="BOE-A-1974-1083" fecha_publicacion="19740709" fecha_vigencia="19740729">
+          <p class="capitulo_num">CAPÍTULO I</p>
+          <p class="capitulo_tit">Fuentes del derecho</p>
+          <blockquote>
+            <p class="nota_pie">Se añade por el Decreto 1836/1974, de 31 de mayo. <a class="refPost">Ref. BOE-A-1974-1083</a>.</p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="a1" tipo="precepto" titulo="Art 1">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="articulo">Artículo 1.</p>
+          <p class="parrafo">Las Leyes obligarán en la Península, islas adyacentes, Canarias y territorios de África sujetos a la legislación peninsular, a los veinte días de su promulgación, si en ellas no se dispusiere otra cosa.</p>
+          <p class="parrafo">Se entiende hecha la promulgación el día en que termine la inserción de la Ley en la Gaceta.</p>
+        </version>
+        <version id_norma="BOE-A-1974-1083" fecha_publicacion="19740709" fecha_vigencia="19740729">
+          <p class="articulo">Artículo 1.</p>
+          <p class="parrafo">1. Las fuentes del ordenamiento jurídico español son la ley, la costumbre y los principios generales del derecho.</p>
+          <p class="parrafo">2. Carecerán de validez las disposiciones que contradigan otra de rango superior.</p>
+          <p class="parrafo">3. La costumbre sólo regirá en defecto de ley aplicable, siempre que no sea contraria a la moral o al orden público, y que resulte probada.</p>
+          <p class="parrafo">Los usos jurídicos que no sean meramente interpretativos de una declaración de voluntad, tendrán la consideración de costumbre.</p>
+          <p class="parrafo">4. Los principios generales del derecho se aplicarán en defecto de ley o costumbre, sin perjuicio de su carácter informador del ordenamiento jurídico.</p>
+          <p class="parrafo">5. Las normas jurídicas contenidas en los tratados internacionales no serán de aplicación directa en España en tanto no hayan pasado a formar parte del ordenamiento interno mediante su publicación íntegra en el «Boletín Oficial del Estado».</p>
+          <p class="parrafo">6. La jurisprudencia complementará el ordenamiento jurídico con la doctrina que, de modo reiterado, establezca el Tribunal Supremo al interpretar y aplicar la ley, la costumbre y los principios generales del derecho.</p>
+          <p class="parrafo">7. Los Jueces y Tribunales tienen el deber inexcusable de resolver en todo caso los asuntos de que conozcan, ateniéndose al sistema de fuentes establecido.</p>
+          <blockquote>
+            <p class="nota_pie">Se modifica por el Decreto 1836/1974, de 31 de mayo. <a class="refPost">Ref. BOE-A-1974-1083</a>.</p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="lprimero" tipo="encabezado" titulo="LIBRO PRIMERO">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="libro_num">LIBRO PRIMERO</p>
+          <p class="libro_tit">De las personas</p>
+        </version>
+      </bloque>
+      <bloque id="tprimero" tipo="encabezado" titulo="TÍTULO PRIMERO">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="titulo_num">TÍTULO I</p>
+          <p class="titulo_tit">De los españoles y extranjeros</p>
+        </version>
+      </bloque>
+      <bloque id="cprimero-2" tipo="encabezado" titulo="CAPÍTULO PRIMERO">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="capitulo_num">CAPÍTULO I</p>
+          <p class="capitulo_tit">De las personas naturales</p>
+        </version>
+      </bloque>
+      <bloque id="as127a130" tipo="precepto" titulo="Arts 127 a 130">
+        <version id_norma="BOE-A-2000-323" fecha_publicacion="20000108" fecha_vigencia="20010108">
+          <p class="articulo">Arts. 127 a 130</p>
+          <p class="parrafo">
+            <strong>(Derogados)</strong>
+          </p>
+          <blockquote>
+            <p class="nota_pie">Se derogan por la disposición derogatoria única.2.1 de la Ley 1/2000, de 7 de enero. <a class="refPost">Ref. BOE-A-2000-323</a>.</p>
+          </blockquote>
+        </version>
+      </bloque>
+      <bloque id="tiii-3" tipo="encabezado" titulo="TÍTULO III">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="titulo_num">TÍTULO III</p>
+          <p class="titulo_tit">De las sucesiones</p>
+          <p class="seccion">Disposiciones generales</p>
+        </version>
+      </bloque>
+      <bloque id="art657" tipo="precepto" titulo="Art 657">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="articulo">Artículo 657.</p>
+          <p class="parrafo">Los derechos a la sucesión de una persona se transmiten desde el momento de su muerte.</p>
+        </version>
+      </bloque>
+      <bloque id="art1976" tipo="precepto" titulo="Art 1976">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="articulo">Artículo 1976.</p>
+          <p class="parrafo">Quedan derogados todos los cuerpos legales, usos y costumbres que constituyen el derecho civil común en todas las materias que son objeto de este Código, y quedarán sin fuerza y vigor, así en su concepto de leyes directamente obligatorias como en el de derecho supletorio. Esta disposición no es aplicable a las leyes que en este Código se declaran subsistentes.</p>
+        </version>
+      </bloque>
+      <bloque id="dt" tipo="encabezado" titulo="DISPOSICIONES TRANSITORIAS">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="capitulo">DISPOSICIONES TRANSITORIAS</p>
+          <p class="parrafo_2">Las variaciones introducidas por este Código, que perjudiquen derechos adquiridos según la legislación civil anterior, no tendrán efecto retroactivo.</p>
+          <p class="parrafo">Para aplicar la legislación que corresponda, en los casos que no estén expresamente determinados en el Código, se observarán las reglas siguientes:</p>
+        </version>
+      </bloque>
+      <bloque id="primera" tipo="precepto" titulo="Primera">
+        <version id_norma="BOE-A-1889-4763" fecha_publicacion="18890725" fecha_vigencia="18890816">
+          <p class="articulo">Primera.</p>
+          <p class="parrafo">Se regirán por la legislación anterior al Código los derechos nacidos, según ella, de hechos realizados bajo su régimen, aunque el Código los regule de otro modo o no los reconozca. Pero si el derecho apareciere declarado por primera vez en el Código, tendrá efecto, desde luego, aunque el hecho que lo origine se verificara bajo la legislación anterior, siempre que no perjudique a otro derecho adquirido de igual origen.</p>
+        </version>
+      </bloque>
+      </texto>
+  </data>
+</response>

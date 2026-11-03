@@ -6,6 +6,19 @@
   </status>
   <data>
     <texto>
+      <bloque id="firma" tipo="firma">
+        <version id_norma="BOE-A-2015-11430" fecha_publicacion="20151024" fecha_vigencia="20151113">
+          <p class="parrafo_2">Dado en Oviedo, el 23 de octubre de 2015.</p>
+          <p class="firma_rey">FELIPE R.</p>
+          <p class="firma_ministro">La Ministra de Empleo y Seguridad Social,</p>
+          <p class="firma_ministro">FÁTIMA BÁÑEZ GARCÍA</p>
+        </version>
+      </bloque>
+      <bloque id="texto" tipo="encabezado" titulo="TEXTO">
+        <version id_norma="BOE-A-2015-11430" fecha_publicacion="20151024" fecha_vigencia="20151113">
+          <p class="anexo">TEXTO REFUNDIDO DE LA LEY DEL ESTATUTO DE LOS TRABAJADORES</p>
+        </version>
+      </bloque>
       <bloque id="ti" tipo="encabezado" titulo="TÍTULO I">
         <version id_norma="BOE-A-2015-11430" fecha_publicacion="20151024" fecha_vigencia="20151113">
           <p class="titulo_num">TÍTULO I</p>
@@ -315,6 +328,12 @@
             <p class="nota_pie">Se modifica el apartado 8 por la disposición final 3.3 del Real Decreto-ley 28/2020, de 22 de septiembre. <a class="refPost">Ref. BOE-A-2020-11043#df-3</a></p>
             <p class="nota_pie">Se modifica la letra b) del apartado 3 y los apartados 4, 5 y 7 por el art. 2.9 del Real Decreto-ley 6/2019, de 1 de marzo. <a class="refPost">Ref. BOE-A-2019-3244#a2</a></p>
           </blockquote>
+        </version>
+      </bloque>
+      <bloque id="daprimera" tipo="precepto" titulo="Disposición adicional primera">
+        <version id_norma="BOE-A-2015-11430" fecha_publicacion="20151024" fecha_vigencia="20151113">
+          <p class="articulo">Disposición adicional primera. Trabajo por cuenta propia.</p>
+          <p class="parrafo">El trabajo realizado por cuenta propia no estará sometido a la legislación laboral, excepto en aquellos aspectos que por precepto legal se disponga expresamente.</p>
         </version>
       </bloque>
       </texto>
