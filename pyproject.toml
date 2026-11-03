@@ -34,3 +34,6 @@ strict = true
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+# The live canary hits the real BOE API; CI runs it weekly with `-m live`.
+addopts = ["-m", "not live"]
+markers = ["live: hits the real BOE API (weekly canary)"]

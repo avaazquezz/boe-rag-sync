@@ -9,6 +9,7 @@ Design: `docs/design.md`. Decisions: `docs/adr/`. Read both before changing cont
 ```bash
 uv sync                          # install (dev group included)
 uv run pytest                    # tests (offline, real BOE XML fixtures in tests/fixtures)
+uv run pytest -m live            # live canary against the BOE API (CI runs it every Monday)
 uv run ruff format && uv run ruff check --fix
 uv run mypy boe_rag_sync         # strict
 uv run pre-commit install        # once per clone: format, lint, types and tests on commit
