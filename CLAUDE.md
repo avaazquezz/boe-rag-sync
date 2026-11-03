@@ -18,8 +18,12 @@ Run locally without the Apify CLI: put the input in `storage/key_value_stores/de
 (e.g. `{"laws": ["BOE-A-2015-11430"]}`) and run `uv run python -m boe_rag_sync`; ops land in
 `storage/datasets/default/`, the run summary in `storage/key_value_stores/default/OUTPUT` and the sync
 manifests in `storage/key_value_stores/boe-rag-sync-state/` (they persist across runs; delete them to start
-over). Simulate billing with `ACTOR_TEST_PAY_PER_EVENT=true ACTOR_MAX_TOTAL_CHARGE_USD=5` (every event
-costs $1 locally, dataset items included, so a limited local run drops items: see docs/design.md).
+over). To simulate billing, pass real prices or every event (dataset items included) costs $1 locally:
+`ACTOR_TEST_PAY_PER_EVENT=true ACTOR_MAX_TOTAL_CHARGE_USD=0.005 APIFY_CHARGED_ACTOR_EVENT_COUNTS='{"article": 0}'
+APIFY_ACTOR_PRICING_INFO='{"pricingModel":"PAY_PER_EVENT","apifyMarginPercentage":0.2,"createdAt":"2026-11-01T00:00:00Z",
+"startedAt":"2026-11-01T00:00:00Z","pricingPerEvent":{"actorChargeEvents":{"article":{"eventTitle":"Article",
+"eventPriceUsd":0.001},"apify-default-dataset-item":{"eventTitle":"Item","eventPriceUsd":0}}}}'`.
+The event counts must be non-empty: the SDK treats `{}` as missing and silently ignores the prices.
 Container: `docker build -t boe-rag-sync .`
 
 ## Architecture
