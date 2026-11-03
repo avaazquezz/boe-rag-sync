@@ -1,0 +1,25 @@
+{
+  "actorSpecification": 1,
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "op",
+          "chunk_id",
+          "law_id",
+          "block_id",
+          "chunk_index",
+          "chunk_count",
+          "chars",
+          "in_force_from",
+          "reason",
+          "text"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}
