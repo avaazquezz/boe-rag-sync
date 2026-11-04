@@ -23,3 +23,9 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+      - id: web-typecheck
+        name: nuxt typecheck (web)
+        entry: bash -c 'cd web && npx nuxt typecheck'
+        language: system
+        files: ^web/
+        pass_filenames: false
