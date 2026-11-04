@@ -30,7 +30,7 @@ useGsap(root, ({ motion }) => {
     <hr class="rule-double" />
     <div class="closing__body">
       <h2 id="closing-title" class="closing__title">{{ copy.closing.title }}</h2>
-      <p class="closing__action"><a class="button" :href="APIFY_URL">{{ copy.closing.cta }}</a></p>
+      <p class="closing__action"><a class="button" :href="APIFY_URL" target="_blank" rel="noopener">{{ copy.closing.cta }}</a></p>
       <div class="closing__stamp" aria-hidden="true">
         <RubberStamp :text="copy.hero.stamp" :date="short" />
       </div>

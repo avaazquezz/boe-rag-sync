@@ -14,7 +14,7 @@ defineProps<{ copy: Copy }>()
       <CodeBlock :code="CURL" :caption="copy.usage.curlCaption" :copy-label="copy.usage.copy" :copied-label="copy.usage.copied" />
       <CodeBlock :code="RECORD" :caption="copy.usage.recordCaption" :copy-label="copy.usage.copy" :copied-label="copy.usage.copied" />
     </div>
-    <p class="usage__loader"><a :href="copy.usage.loaderHref">{{ copy.usage.loader }}</a></p>
+    <p class="usage__loader"><a :href="copy.usage.loaderHref" target="_blank" rel="noopener">{{ copy.usage.loader }}</a></p>
   </section>
 </template>
 
