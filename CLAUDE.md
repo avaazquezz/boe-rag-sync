@@ -45,6 +45,24 @@ on hand-built objects), `test_pipeline.py` (fixture XML → records), `test_sync
 law, partial runs), `test_main.py` (local defaults match the input schema). Fixtures are trimmed from
 real laws: Workers' Statute (`et`), Civil Code (`cc`), Penal Code (`cp`), income tax law (`irpf`).
 
+## Landing (`web/`)
+
+Static Nuxt site for spanish-laws.vazquezlabs.com; brief and art direction in `docs/landing-brief.md`.
+Separate from the Actor (excluded from its Docker context) and checked by `.github/workflows/web.yml`.
+
+```bash
+cd web && npm ci
+npx nuxt dev                     # http://localhost:3000
+npx nuxt typecheck
+npx nuxt generate                # static output in .output/public
+```
+
+Copy lives in `app/content/{es,en}.ts`; the law text and numbers in `app/content/data.ts` are real,
+computed with this package on the live BOE XML: regenerate them with the package, never by hand.
+`public/og.png` is a screenshot of `/og` at 1200×630. Production: on the server,
+`git pull --ff-only && docker compose -f web/compose.yaml up -d --build` (nginx behind the shared
+Traefik).
+
 ## Conventions
 
 - Public contracts (input schema, record fields, `chunk_id`, `point_id` namespace) change only with a new ADR.
