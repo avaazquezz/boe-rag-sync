@@ -1,5 +1,7 @@
 # Production on the Hetzner server, behind the shared Traefik (network `web`, resolver `le`).
 # Deploy: git pull --ff-only && docker compose -f web/compose.yaml up -d --build
+# Own project name: the folder name `web` is generic and another project's `down` would stop this one.
+name: spanish-laws
 services:
   web:
     build: .
