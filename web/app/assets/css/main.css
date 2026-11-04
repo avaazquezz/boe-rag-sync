@@ -1,0 +1,217 @@
+/* The annotated gazette: printed paper and ink, worked on with a red-and-blue pencil.
+   Blue always adds or annotates (upsert); red always removes (delete, repealed). */
+:root {
+  --paper: #ecedea;
+  --sheet: #fafaf7;
+  --ink: #17191e;
+  --ink-faded: #5a5d66;
+  --pencil: #2347c5;
+  --stamp-red: #c2352b;
+  --rule: color-mix(in oklab, var(--ink) 22%, transparent);
+
+  --serif: "Ibarra Real Nova", "Iowan Old Style", Georgia, serif;
+  --mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Fluid type scale, 360 → 1440 px, ratio 1.2 → 1.333; every step keeps a rem term for zoom. */
+  --step--2: clamp(0.75rem, 0.73rem + 0.1vw, 0.8rem);
+  --step--1: clamp(0.84rem, 0.81rem + 0.14vw, 0.94rem);
+  --step-0: clamp(1.125rem, 1.08rem + 0.19vw, 1.25rem);
+  --step-1: clamp(1.35rem, 1.24rem + 0.47vw, 1.67rem);
+  --step-2: clamp(1.62rem, 1.41rem + 0.9vw, 2.22rem);
+  --step-3: clamp(1.94rem, 1.58rem + 1.6vw, 2.96rem);
+  --step-hero: clamp(2.75rem, 1.6rem + 4.6vw, 5.75rem);
+
+  --gutter: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+  --gap: clamp(1rem, 0.6rem + 1.2vw, 1.75rem);
+  --space-s: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  --space-m: clamp(3rem, 2.2rem + 3vw, 5rem);
+  --space-l: clamp(5rem, 3.5rem + 6vw, 9rem);
+  --space-xl: clamp(7rem, 4rem + 11vw, 15rem);
+
+  /* Motion tokens, the same numbers as app/utils/motion.ts. */
+  --ease-brand: cubic-bezier(0.625, 0.05, 0, 1);
+  --ease-brand-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 200ms;
+  --dur-ui: 500ms;
+  --dur-reveal: 900ms;
+
+  color-scheme: light;
+  accent-color: var(--pencil);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--ink-faded) var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+blockquote,
+ol,
+ul,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--pencil);
+  color: var(--sheet);
+}
+
+:focus-visible {
+  outline: 2px solid var(--pencil);
+  outline-offset: 3px;
+}
+
+code,
+kbd,
+pre,
+.mono {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: 0.78em;
+  font-variant-ligatures: none;
+}
+
+/* Links: an ink underline at rest; on hover the blue pencil draws its own line over it. */
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(--rule);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5.2C20 3.6 38 6.4 60 4.6S101 3.4 119 5' fill='none' stroke='%232347c5' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 0.42em;
+  transition:
+    background-size var(--dur-ui) var(--ease-brand-out),
+    text-decoration-color var(--dur-micro) linear;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-size: 100% 0.42em;
+    text-decoration-color: transparent;
+  }
+}
+
+a:focus-visible {
+  background-size: 100% 0.42em;
+  text-decoration-color: transparent;
+}
+
+/* Stamps start oversized before they land: clip, not hidden, so sticky children keep working. */
+.main {
+  overflow-x: clip;
+}
+
+.wrap {
+  width: min(100% - 2 * var(--gutter), 84rem);
+  margin-inline: auto;
+}
+
+/* The gazette's double rule: a heavy line over a hairline. */
+.rule-double {
+  border: 0;
+  border-top: 4px double var(--ink);
+  margin: 0;
+}
+
+.run-in {
+  font-weight: 700;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 0.75rem;
+  z-index: 10;
+  padding: 0.5rem 0.9rem;
+  background: var(--ink);
+  color: var(--sheet);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Primary action: blue pencil fill. Secondary: ink text with the pencil underline. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: 3rem;
+  padding: 0.7rem 1.35rem 0.75rem;
+  background: var(--pencil);
+  color: var(--sheet);
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  background-image: none;
+  border-radius: 2px;
+  transition:
+    background-color var(--dur-micro) linear,
+    transform var(--dur-micro) var(--ease-brand-out);
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background-color: color-mix(in oklab, var(--pencil) 82%, var(--ink));
+  }
+}
+
+.button:active {
+  transform: translateY(1px) scale(0.985);
+}

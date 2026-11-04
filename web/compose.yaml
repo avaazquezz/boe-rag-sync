@@ -1,0 +1,30 @@
+# Production on the Hetzner server, behind the shared Traefik (network `web`, resolver `le`).
+# Deploy: git pull --ff-only && docker compose -f web/compose.yaml up -d --build
+services:
+  web:
+    build: .
+    container_name: spanish-laws-web
+    restart: unless-stopped
+    mem_limit: 64m
+    cpus: 0.25
+    networks: [web]
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.spanishlaws.rule=Host(`spanish-laws.vazquezlabs.com`)
+      - traefik.http.routers.spanishlaws.entrypoints=websecure
+      - traefik.http.routers.spanishlaws.tls.certresolver=le
+      - traefik.http.services.spanishlaws.loadbalancer.server.port=80
+      # Own middleware names: relying on ones another project defines would couple their deploys.
+      - traefik.http.routers.spanishlaws-http.rule=Host(`spanish-laws.vazquezlabs.com`)
+      - traefik.http.routers.spanishlaws-http.entrypoints=web
+      - traefik.http.routers.spanishlaws-http.middlewares=spanishlaws-https
+      - traefik.http.middlewares.spanishlaws-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.spanishlaws-https.redirectscheme.permanent=true
+
+networks:
+  web:
+    external: true
