@@ -37,8 +37,8 @@ useGsap(root, ({ motion }) => {
     <div class="hero__intro">
       <p class="hero__lede">{{ copy.hero.lede }}</p>
       <p class="hero__actions">
-        <a class="button" :href="APIFY_URL">{{ copy.hero.cta }}</a>
-        <a class="hero__secondary" :href="GITHUB_URL">{{ copy.hero.secondary }}</a>
+        <a class="button" :href="APIFY_URL" target="_blank" rel="noopener">{{ copy.hero.cta }}</a>
+        <a class="hero__secondary" :href="GITHUB_URL" target="_blank" rel="noopener">{{ copy.hero.secondary }}</a>
       </p>
     </div>
 

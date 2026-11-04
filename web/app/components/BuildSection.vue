@@ -35,7 +35,7 @@ useGsap(root, ({ motion }) => {
     </div>
     <p class="build__links">
       <template v-for="(link, i) in copy.build.links" :key="link.href">
-        <a :href="link.href">{{ link.text }}</a>
+        <a :href="link.href" target="_blank" rel="noopener">{{ link.text }}</a>
         <span v-if="i < copy.build.links.length - 1" aria-hidden="true"> · </span>
       </template>
     </p>

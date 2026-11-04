@@ -15,11 +15,11 @@ defineProps<{ copy: Copy }>()
         <p>{{ copy.footer.disclaimer }}</p>
       </div>
       <p class="footer__sign">
-        {{ copy.footer.madeBy }} <a :href="AUTHOR_URL">VazquezDev</a>
+        {{ copy.footer.madeBy }} <a :href="AUTHOR_URL" target="_blank" rel="noopener">VazquezDev</a>
       </p>
       <ul class="footer__links">
-        <li><a :href="APIFY_URL">Apify Store</a></li>
-        <li><a :href="GITHUB_URL">{{ copy.footer.source }}</a></li>
+        <li><a :href="APIFY_URL" target="_blank" rel="noopener">Apify Store</a></li>
+        <li><a :href="GITHUB_URL" target="_blank" rel="noopener">{{ copy.footer.source }}</a></li>
         <li>{{ copy.footer.license }}</li>
       </ul>
     </div>
